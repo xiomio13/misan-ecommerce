@@ -1,16 +1,36 @@
-# React + Vite
+# Misan - Tienda Online de Polos para Caballero
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
+**Misan** es una plataforma de e-commerce moderna y especializada en la venta exclusiva de polos de alta calidad para caballero. Este proyecto forma parte de la base técnica desarrollada en el curso de React, estructurando una interfaz limpia, modular y basada en componentes escalables orientados al sector de la moda masculina.
 
-Currently, two official plugins are available:
+## Tecnologías Utilizadas
+* **React** (con Vite)
+* **JavaScript (ES6+)**
+* **HTML5 / CSS3**
+* **Git y GitHub** (Control de versiones)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Instrucciones de Instalación y Ejecución Local
+Para clonar, instalar y correr este proyecto en tu computadora de forma local, sigue estos pasos desde tu terminal:
 
-## React Compiler
+1. **Clona este repositorio:**
+   ```bash
+   git clone https://github.com/xiomio13/mi-primer-proyecto-react.git
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Entra a la carpeta del proyecto:**
+   ```bash
+   cd mi-primer-proyecto-react
+   ```
 
-## Expanding the ESLint configuration
+3. **Instala las dependencias necesarias:**
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+4. **Inicia el servidor de desarrollo local:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Abre la aplicación en tu navegador:**
+   Ingresa a la dirección proporcionada por la terminal (generalmente `http://localhost:5173/`).

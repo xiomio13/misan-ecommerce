@@ -1,12 +1,10 @@
-import React from 'react'
-
-const App = () => {
+function App() {
   return (
     <div>
-      <h1>E-Commerce Store - Panel de Control Principal</h1>
-      <p>Bienvenido a la configuración inicial de nuestro proyecto.</p>
+      <h1>Tienda Virtual Misan</h1>
+      <p>Bienvenido a nuestra plataforma de e-commerce en construcción.</p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
