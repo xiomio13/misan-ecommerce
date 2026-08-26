@@ -28,3 +28,20 @@ Aplicación web interactiva de comercio electrónico desarrollada con **React** 
 * **`Navbar`:** Barra de navegación superior con el logotipo de Misan, menú con categorías comerciales de polos y contenedor para el carrito de compras.
 * **`CartWidget`:** Componente modular ubicado dentro del `Navbar` que renderiza el icono del carrito y la burbuja de notificación con la cantidad de artículos.
 * **`ItemListContainer`:** Contenedor principal que recibe una prop `greeting` y muestra un mensaje de bienvenida personalizado y centrado en la vista.
+
+
+## ⚡ Flujo Asíncrono y Renderizado Dinámico (Pre-entrega 3)
+
+### 1. Simulación de API (`asyncMock.js`)
+* Se exporta la función `getProducts` que retorna una `Promise`.
+* Se implementó un retardo simulado de red de `2000ms` usando `setTimeout`.
+
+### 2. Ciclo de Vida y Estado (`ItemListContainer.jsx`)
+* El estado `items` se inicializa como un array vacío (`[]`).
+* Se utiliza `useEffect` con array de dependencias vacío (`[]`) para disparar la carga de datos exclusivamente durante la fase de montaje.
+* Implementación de flujo `async/await` con manejo de estados `loading` para mejorar la experiencia de usuario (UX).
+
+### 3. Separación de Responsabilidades
+* **`ItemListContainer`:** Componente contenedor enfocado en la obtención de datos y gestión de estado.
+* **`ItemList`:** Componente presentacional encargado de iterar (`.map()`) la colección recibida por props.
+* **`Item`:** Componente atómico que dibuja la card individual de cada polo, asociando `key={product.id}` de forma única y estable.
