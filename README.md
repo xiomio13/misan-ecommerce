@@ -45,3 +45,14 @@ Aplicación web interactiva de comercio electrónico desarrollada con **React** 
 * **`ItemListContainer`:** Componente contenedor enfocado en la obtención de datos y gestión de estado.
 * **`ItemList`:** Componente presentacional encargado de iterar (`.map()`) la colección recibida por props.
 * **`Item`:** Componente atómico que dibuja la card individual de cada polo, asociando `key={product.id}` de forma única y estable.
+
+## 🔍 Detalle de Producto con Promesa Dinámica (Pre-entrega 4)
+
+### 1. Búsqueda Asíncrona Dinámica (`getProductById`)
+* Función exportada en `src/mock/asyncMock.js` que recibe un parámetro `productId`.
+* Retorna una `Promise` que resuelve con el producto coincidente mediante `.find()` tras un retardo de `1500ms`, o rechaza con un error si no se encuentra.
+
+### 2. Arquitectura y Separación de Responsabilidades
+* **`ItemDetailContainer`**: Componente contenedor que ejecuta la promesa en su fase de montaje (`useEffect`), administrando los estados `product`, `loading` y `error`.
+* **`ItemDetail`**: Componente de presentación puro que recibe el objeto por *props* y distribuye la vista en dos sectores (imagen principal y ficha técnica extendida con composición, calce, tallas y SKU).
+* **`ItemCount`**: Componente reutilizado que regula la selección de unidades respetando el stock disponible del producto (`0 <= count <= stock`).
