@@ -554,3 +554,67 @@
     height: 350px;
   }
 }
+
+/* ========================================================
+   ESTILOS PARA NAVEGACIÓN ACTIVA Y VISTA 404 (PRE-ENTREGA 5)
+   ======================================================== */
+
+.navbar-brand-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Indicador visual de NavLink activo */
+.navbar-links a.active {
+  color: #e63946;
+  font-weight: 700;
+  border-bottom: 2px solid #e63946;
+  padding-bottom: 4px;
+}
+
+/* Vista 404 */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.not-found-code {
+  font-size: 5rem;
+  font-weight: 900;
+  color: #e63946;
+  line-height: 1;
+}
+
+.not-found-title {
+  font-size: 2rem;
+  color: #1d3557;
+  margin: 1rem 0;
+}
+
+.not-found-text {
+  color: #6c757d;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.btn-back-home {
+  display: inline-block;
+  background-color: #1d3557;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-back-home:hover {
+  background-color: #457b9d;
+}

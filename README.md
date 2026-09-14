@@ -66,3 +66,17 @@ Aplicación web interactiva de comercio electrónico desarrollada con **React** 
 * **`asyncMock.test.js`:** Valida la resolución correcta de la promesa con datos reales y su rechazo ante identificadores no encontrados.
 * **`ItemCount.test.jsx`:** Valida que el contador respete los topes de cantidad (límite inferior `0` y límite superior `stock`) y la llamada a la función de adición.
 * **Ejecución local de pruebas:** `npm run test`
+
+## 🧭 Arquitectura de Navegación Completa (Pre-entrega 5)
+
+### 1. Sistema de Enrutamiento (`react-router-dom`)
+La aplicación cuenta con un enrutador centralizado montado con `BrowserRouter` en `App.jsx`, manteniendo un layout compartido (`Navbar` y `Footer`) persistente en todo momento:
+* **`/` (Inicio):** Carga el catálogo completo de polos mediante `ItemListContainer`.
+* **`/category/:categoryId`:** Filtra dinámicamente los productos según el parámetro capturado con `useParams`.
+* **`/item/:itemId`:** Monta la ficha técnica extendida y selector de stock del producto seleccionado.
+* **`*` (Error 404):** Captura URLs inexistentes y ofrece navegación controlada hacia la raíz con el componente `NotFound`.
+
+### 2. Navegación SPA Declarativa
+* **`NavLink`:** Aplicado en el menú superior para resaltar automáticamente la categoría seleccionada mediante la clase `.active`.
+* **`Link`:** Empleado en tarjetas de producto (`Item`), el logotipo de la marca y la vista de error para transicionar entre vistas sin recargas de página.
+* **Sincronización Reactiva:** `ItemListContainer` escucha los cambios en `categoryId` mediante el array de dependencias de `useEffect([categoryId])`, resolviendo la promesa correspondiente de forma automática.

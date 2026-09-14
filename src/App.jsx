@@ -1,9 +1,10 @@
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ItemListContainer from './components/ItemListContainer';
 import ItemDetailContainer from './components/ItemDetailContainer';
+import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import './App.css';
 
@@ -11,19 +12,44 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app-layout">
+        {/* Layout persistente: Navbar visible en todas las rutas */}
         <Navbar />
+
         <main className="main-content">
           <Routes>
-            {/* Inicio: Catálogo general */}
-            <Route path="/" element={<ItemListContainer greeting="¡Bienvenido a Misan!" />} />
+            {/* 1. Ruta Inicio (catálogo completo) */}
+            <Route 
+              path="/" 
+              element={<ItemListContainer greeting="¡Bienvenido a Misan! Lo mejor en moda masculina" />} 
+            />
 
-            {/* Vista dinámica de producto por ID */}
-            <Route path="/item/:itemId" element={<ItemDetailContainer />} />
+            {/* 2. Ruta Categoría dinámica */}
+            <Route 
+              path="/category/:categoryId" 
+              element={<ItemListContainer greeting="Catálogo por Categoría" />} 
+            />
 
-            {/* Ruta por defecto para errores 404 */}
-            <Route path="*" element={<h2 style={{ textAlign: 'center', margin: '4rem 0', color: '#1d3557' }}>404 - Página no encontrada</h2>} />
+            {/* 3. Ruta Detalle individual */}
+            <Route 
+              path="/item/:itemId" 
+              element={<ItemDetailContainer />} 
+            />
+
+            {/* Redirección preventiva para zonas privadas */}
+            <Route 
+              path="/admin" 
+              element={<Navigate to="/" replace />} 
+            />
+
+            {/* 4. Ruta comodín de error 404 */}
+            <Route 
+              path="*" 
+              element={<NotFound />} 
+            />
           </Routes>
         </main>
+
+        {/* Layout persistente: Footer visible en todas las rutas */}
         <Footer />
       </div>
     </BrowserRouter>

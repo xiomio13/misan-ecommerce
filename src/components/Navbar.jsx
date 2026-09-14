@@ -1,24 +1,58 @@
+// src/components/Navbar.jsx
 import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import CartWidget from './CartWidget';
 
 function Navbar() {
   return (
     <header className="navbar-container">
       <div className="navbar-logo">
-        <h2>Misan<span>.</span></h2>
+        <Link to="/" className="navbar-brand-link">
+          <h2>Misan<span>.</span></h2>
+        </Link>
       </div>
 
       <nav className="navbar-links">
         <ul>
-          <li><a href="#clasicos">Polos Clásicos</a></li>
-          <li><a href="#slim-fit">Polos Slim Fit</a></li>
-          <li><a href="#oversize">Polos Oversize</a></li>
-          <li><a href="#pique">Polos Piqué</a></li>
+          <li>
+            <NavLink 
+              to="/category/clasicos" 
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Polos Clásicos
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/category/slim-fit" 
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Polos Slim Fit
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/category/oversize" 
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Polos Oversize
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/category/pique" 
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Polos Piqué
+            </NavLink>
+          </li>
         </ul>
       </nav>
 
       <div className="navbar-cart">
-        <CartWidget />
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <CartWidget />
+        </Link>
       </div>
     </header>
   );
