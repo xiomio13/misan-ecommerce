@@ -46,13 +46,23 @@ Aplicación web interactiva de comercio electrónico desarrollada con **React** 
 * **`ItemList`:** Componente presentacional encargado de iterar (`.map()`) la colección recibida por props.
 * **`Item`:** Componente atómico que dibuja la card individual de cada polo, asociando `key={product.id}` de forma única y estable.
 
-## 🔍 Detalle de Producto con Promesa Dinámica (Pre-entrega 4)
+## 🔍 Detalle de Producto, Enrutamiento Dinámico y Pruebas Unitarias (Pre-entrega 4)
 
 ### 1. Búsqueda Asíncrona Dinámica (`getProductById`)
-* Función exportada en `src/mock/asyncMock.js` que recibe un parámetro `productId`.
-* Retorna una `Promise` que resuelve con el producto coincidente mediante `.find()` tras un retardo de `1500ms`, o rechaza con un error si no se encuentra.
+* Función exportada en `src/mock/asyncMock.js` que recibe un identificador (`productId`).
+* Retorna una `Promise` que resuelve con el objeto coincidente tras un retardo simulado de red de `1500ms`, o rechaza con un `Error` descriptivo si el ID no existe en el catálogo.
 
-### 2. Arquitectura y Separación de Responsabilidades
-* **`ItemDetailContainer`**: Componente contenedor que ejecuta la promesa en su fase de montaje (`useEffect`), administrando los estados `product`, `loading` y `error`.
-* **`ItemDetail`**: Componente de presentación puro que recibe el objeto por *props* y distribuye la vista en dos sectores (imagen principal y ficha técnica extendida con composición, calce, tallas y SKU).
-* **`ItemCount`**: Componente reutilizado que regula la selección de unidades respetando el stock disponible del producto (`0 <= count <= stock`).
+### 2. Navegación Dinámica (`react-router-dom`)
+* **Ruta dinámica `/item/:itemId`:** Conectada en `App.jsx` mediante `BrowserRouter` y `Routes`.
+* **Hook `useParams`:** Implementado en `ItemDetailContainer` para capturar el segmento dinámico de la URL de forma reactiva dentro de las dependencias de `useEffect`.
+* **Navegación declarativa:** Tarjetas `Item` enlazadas mediante `<Link to={`/item/${id}`}>`.
+
+### 3. Componentes y Separación de Responsabilidades
+* **`ItemDetailContainer`:** Componente contenedor enfocado en la lógica asíncrona, control de estados (`product`, `loading`, `error`) y captura de parámetros de ruta.
+* **`ItemDetail`:** Componente puramente presentacional que distribuye la ficha técnica (material, calce, tallas, precio, stock e imágenes).
+* **`ItemCount`:** Componente modular reutilizable que gestiona la selección de unidades respetando los límites reales del producto (`0 <= count <= stock`).
+
+### 4. Cobertura de Pruebas Unitarias (Vitest & Testing Library)
+* **`asyncMock.test.js`:** Valida la resolución correcta de la promesa con datos reales y su rechazo ante identificadores no encontrados.
+* **`ItemCount.test.jsx`:** Valida que el contador respete los topes de cantidad (límite inferior `0` y límite superior `stock`) y la llamada a la función de adición.
+* **Ejecución local de pruebas:** `npm run test`

@@ -1,7 +1,9 @@
+// src/components/Item.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Item({ product }) {
-  const { name, price, category, img, stock, description } = product;
+  const { id, name, price, category, img, stock, description } = product;
 
   return (
     <article className="product-card">
@@ -19,9 +21,17 @@ function Item({ product }) {
           <span className="product-stock">Stock: {stock} u.</span>
         </div>
 
-        <button className="btn-detail" type="button">
+        <Link
+          to={`/item/${id}`}
+          className="btn-detail"
+          style={{
+            textAlign: "center",
+            textDecoration: "none",
+            display: "block",
+          }}
+        >
           Ver detalle
-        </button>
+        </Link>
       </div>
     </article>
   );

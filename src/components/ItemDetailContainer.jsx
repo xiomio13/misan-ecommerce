@@ -1,33 +1,36 @@
 // src/components/ItemDetailContainer.jsx
-import React, { useState, useEffect } from 'react';
-import { getProductById } from '../mock/asyncMock';
-import ItemDetail from './ItemDetail';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getProductById } from "../mock/asyncMock";
+import ItemDetail from "./ItemDetail";
 
 function ItemDetailContainer() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Captura dinámica del ID desde la URL (/item/:itemId)
+  const { itemId } = useParams();
+
   useEffect(() => {
-    // Definimos un ID existente temporal para validar la vista
-    // (En la entrega 5 este ID provendrá de la URL con useParams)
-    const targetId = 'polo-01';
+    // Si no hay parámetro en la URL, toma 'polo-01' por defecto
+    const idToSearch = itemId || "polo-01";
 
     setLoading(true);
     setError(null);
 
-    getProductById(targetId)
+    getProductById(idToSearch)
       .then((res) => {
         setProduct(res);
       })
       .catch((err) => {
         console.error(err);
-        setError(err.message || 'No se pudo cargar el producto.');
+        setError(err.message || "No se pudo cargar el producto.");
       })
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [itemId]);
 
   if (loading) {
     return (
