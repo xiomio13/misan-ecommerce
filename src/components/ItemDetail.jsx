@@ -1,12 +1,15 @@
 // src/components/ItemDetail.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import ItemCount from './ItemCount';
 
 function ItemDetail({ product }) {
   const { name, img, price, category, description, stock, material, fit, sizes, sku } = product;
 
+  // Estado para la talla seleccionada (inicia con la primera talla disponible)
+  const [selectedSize, setSelectedSize] = useState(sizes && sizes.length > 0 ? sizes[0] : null);
+
   const handleAddToCart = (quantity) => {
-    console.log(`Se agregaron ${quantity} unidades de "${name}" al carrito.`);
+    console.log(`Se agregaron ${quantity} unidades de "${name}" (Talla: ${selectedSize}) al carrito.`);
   };
 
   return (
@@ -28,7 +31,7 @@ function ItemDetail({ product }) {
           <p>{description}</p>
         </div>
 
-        {/* Ficha técnica adicional (cumple el criterio de info adicional a Item) */}
+        {/* Ficha técnica */}
         <div className="item-detail-specs">
           <div className="spec-row">
             <span className="spec-label">Composición:</span>
@@ -44,17 +47,26 @@ function ItemDetail({ product }) {
           </div>
         </div>
 
-        {/* Selector de tallas */}
+        {/* Selector de tallas interactivo */}
         <div className="item-detail-sizes">
-          <h4>Tallas en stock:</h4>
+          <h4>
+            Talla seleccionada: <strong>{selectedSize}</strong>
+          </h4>
           <div className="size-pill-container">
             {sizes?.map((size) => (
-              <span key={size} className="size-pill">{size}</span>
+              <button
+                key={size}
+                type="button"
+                className={`size-pill-btn ${selectedSize === size ? 'active' : ''}`}
+                onClick={() => setSelectedSize(size)}
+              >
+                {size}
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Reutilización modular de ItemCount */}
+        {/* Componente ItemCount */}
         <div className="item-detail-actions">
           <ItemCount stock={stock} initial={1} onAdd={handleAddToCart} />
         </div>

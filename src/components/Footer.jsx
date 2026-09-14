@@ -1,33 +1,30 @@
-import React from "react";
+// src/components/Footer.jsx
+import React from 'react';
+import { Link } from 'react-router-dom'; // 1. Importación obligatoria de Link
 
 function Footer() {
   return (
     <footer className="footer-container">
       <div className="footer-content">
         <div className="footer-brand">
-          <h3>
-            Misan<span>.</span>
-          </h3>
-          <p>
-            Especialistas en polos premium para caballero. Diseños atemporales y
-            calidad 100% algodón peruano.
-          </p>
+          <h3>Misan<span>.</span></h3>
+          <p>Especialistas en polos premium para caballero. Diseños atemporales y calidad 100% algodón peruano.</p>
         </div>
 
         <div className="footer-links">
           <h4>Categorías</h4>
           <ul>
             <li>
-              <a href="#clasicos">Polos Clásicos</a>
+              <Link to="/category/clasicos">Polos Clásicos</Link>
             </li>
             <li>
-              <a href="#slim-fit">Polos Slim Fit</a>
+              <Link to="/category/slim-fit">Polos Slim Fit</Link>
             </li>
             <li>
-              <a href="#oversize">Polos Oversize</a>
+              <Link to="/category/oversize">Polos Oversize</Link>
             </li>
             <li>
-              <a href="#pique">Polos Piqué</a>
+              <Link to="/category/pique">Polos Piqué</Link>
             </li>
           </ul>
         </div>
@@ -41,10 +38,7 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>
-          &copy; {new Date().getFullYear()} Misan E-commerce. Todos los derechos
-          reservados.
-        </p>
+        <p>&copy; {new Date().getFullYear()} Misan E-commerce. Todos los derechos reservados.</p>
       </div>
     </footer>
   );
