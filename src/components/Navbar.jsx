@@ -49,8 +49,9 @@ function Navbar() {
         </ul>
       </nav>
 
+      {/* Acceso directo a la página de carrito */}
       <div className="navbar-cart">
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
           <CartWidget />
         </Link>
       </div>

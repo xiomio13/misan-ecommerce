@@ -1,15 +1,38 @@
 // src/components/ItemDetail.jsx
-import React, { useState } from 'react';
-import ItemCount from './ItemCount';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import ItemCount from "./ItemCount";
 
 function ItemDetail({ product }) {
-  const { name, img, price, category, description, stock, material, fit, sizes, sku } = product;
+  const {
+    name,
+    img,
+    price,
+    category,
+    description,
+    stock,
+    material,
+    fit,
+    sizes,
+    sku,
+  } = product;
 
-  // Estado para la talla seleccionada (inicia con la primera talla disponible)
-  const [selectedSize, setSelectedSize] = useState(sizes && sizes.length > 0 ? sizes[0] : null);
+  // Estado para la talla seleccionada (inicia con la primera disponible)
+  const [selectedSize, setSelectedSize] = useState(
+    sizes && sizes.length > 0 ? sizes[0] : null,
+  );
+
+  // Estado local para alternar la vista una vez que se agregan productos
+  const [addedQuantity, setAddedQuantity] = useState(0);
+
+  // Extraemos la función global de agregar al carrito
+  const { addItem } = useCart();
 
   const handleAddToCart = (quantity) => {
-    console.log(`Se agregaron ${quantity} unidades de "${name}" (Talla: ${selectedSize}) al carrito.`);
+    setAddedQuantity(quantity);
+    // Agregamos al contexto el producto con la talla elegida y la cantidad
+    addItem({ ...product, selectedSize }, quantity);
   };
 
   return (
@@ -20,7 +43,7 @@ function ItemDetail({ product }) {
         <span className="item-detail-badge">{category}</span>
       </div>
 
-      {/* Columna Derecha: Información Extendida y Compra */}
+      {/* Columna Derecha: Información Técnica y Acciones de Compra */}
       <div className="item-detail-info">
         <span className="item-detail-sku">SKU: {sku}</span>
         <h1 className="item-detail-title">{name}</h1>
@@ -47,7 +70,7 @@ function ItemDetail({ product }) {
           </div>
         </div>
 
-        {/* Selector de tallas interactivo */}
+        {/* Selector interactivo de tallas */}
         <div className="item-detail-sizes">
           <h4>
             Talla seleccionada: <strong>{selectedSize}</strong>
@@ -57,7 +80,7 @@ function ItemDetail({ product }) {
               <button
                 key={size}
                 type="button"
-                className={`size-pill-btn ${selectedSize === size ? 'active' : ''}`}
+                className={`size-pill-btn ${selectedSize === size ? "active" : ""}`}
                 onClick={() => setSelectedSize(size)}
               >
                 {size}
@@ -66,9 +89,26 @@ function ItemDetail({ product }) {
           </div>
         </div>
 
-        {/* Componente ItemCount */}
+        {/* Renderizado condicional: Contador vs Botones de Compra */}
         <div className="item-detail-actions">
-          <ItemCount stock={stock} initial={1} onAdd={handleAddToCart} />
+          {addedQuantity > 0 ? (
+            <div className="checkout-cta-box">
+              <p className="item-added-alert">
+                ✓ ¡Agregaste {addedQuantity} unidad(es) de talla{" "}
+                <strong>{selectedSize}</strong> al carrito!
+              </p>
+              <div className="cta-buttons-group">
+                <Link to="/cart" className="btn-go-cart">
+                  Terminar mi compra
+                </Link>
+                <Link to="/" className="btn-keep-buying">
+                  Seguir comprando
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <ItemCount stock={stock} initial={1} onAdd={handleAddToCart} />
+          )}
         </div>
       </div>
     </article>

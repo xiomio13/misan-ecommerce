@@ -643,3 +643,231 @@
   border-color: #1d3557;
   box-shadow: 0 2px 6px rgba(29, 53, 87, 0.25);
 }
+
+/* ========================================================
+   ESTILOS AGREGADOS PARA LA PRE-ENTREGA 6 (VISTA CART)
+   ======================================================== */
+
+.cart-view-container, 
+.cart-empty-container {
+  max-width: 1050px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+.cart-empty-container {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cart-empty-container h2 {
+  color: #1d3557;
+  margin-bottom: 0.8rem;
+}
+
+.cart-empty-container p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.btn-back-catalog, 
+.btn-go-cart, 
+.btn-checkout {
+  display: inline-block;
+  background-color: #1d3557;
+  color: #ffffff;
+  padding: 0.85rem 1.6rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.btn-back-catalog:hover, 
+.btn-go-cart:hover, 
+.btn-checkout:hover {
+  background-color: #457b9d;
+}
+
+.cart-header {
+  margin-bottom: 2rem;
+}
+
+.cart-header h1 {
+  color: #1d3557;
+  margin: 0;
+}
+
+.cart-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin-top: 0.3rem;
+}
+
+.cart-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.cart-item-card {
+  position: relative; 
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background-color: #ffffff;
+  padding: 1.2rem 2.5rem 1.2rem 1.2rem; 
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.cart-item-thumbnail {
+  width: 85px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f1f3f5;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.cart-item-details h3 {
+  font-size: 1.1rem;
+  color: #1d3557;
+  margin: 0 0 0.4rem 0;
+}
+
+.cart-item-details p {
+  margin: 0.15rem 0;
+  font-size: 0.88rem;
+  color: #495057;
+}
+
+.cart-item-subtotal {
+  font-weight: 700;
+  color: #e63946 !important;
+  margin-top: 0.4rem !important;
+}
+
+.btn-remove-item {
+  position: absolute; 
+  top: 12px;           
+  right: 12px;         
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #adb5bd;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-remove-item:hover {
+  color: #e63946;
+  transform: scale(1.15);
+}
+
+.cart-summary-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cart-summary-card h2 {
+  font-size: 1.25rem;
+  color: #1d3557;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.summary-breakdown {
+  margin-bottom: 1.5rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+.total-row {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #e9ecef;
+  color: #1d3557;
+}
+
+.cart-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.btn-clear-cart {
+  background-color: transparent;
+  color: #e63946;
+  border: 1px solid #e63946;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-clear-cart:hover {
+  background-color: #e63946;
+  color: #ffffff;
+}
+
+.checkout-cta-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.item-added-alert {
+  color: #2a9d8f;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cta-buttons-group {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-keep-buying {
+  display: inline-block;
+  background-color: #e9ecef;
+  color: #1d3557;
+  padding: 0.85rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-keep-buying:hover {
+  background-color: #dee2e6;
+}
+
+@media (max-width: 768px) {
+  .cart-content-grid {
+    grid-template-columns: 1fr;
+  }
+}

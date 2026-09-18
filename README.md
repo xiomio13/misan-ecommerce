@@ -80,3 +80,22 @@ La aplicación cuenta con un enrutador centralizado montado con `BrowserRouter` 
 * **`NavLink`:** Aplicado en el menú superior para resaltar automáticamente la categoría seleccionada mediante la clase `.active`.
 * **`Link`:** Empleado en tarjetas de producto (`Item`), el logotipo de la marca y la vista de error para transicionar entre vistas sin recargas de página.
 * **Sincronización Reactiva:** `ItemListContainer` escucha los cambios en `categoryId` mediante el array de dependencias de `useEffect([categoryId])`, resolviendo la promesa correspondiente de forma automática.
+
+
+## 🛒 Estado Global del Carrito con Context API (Pre-entrega 6)
+
+### 1. Arquitectura de Estado Global (`CartContext.jsx`)
+* **`CartProvider`:** Envuelve el árbol de componentes dentro del enrutador en `App.jsx`, permitiendo acceso transversal al estado de compras sin incurrir en *prop drilling*.
+* **Custom Hook `useCart`:** Facilita el consumo seguro y centralizado del contexto validando su envoltura.
+
+### 2. Gestión Inmutable y Métodos Principales
+* **`addItem(item, quantity)`:** Comprueba duplicados con `.find()`. Si el producto ya está en el carrito, genera un nuevo estado sumando las unidades con `.map()`; si es un producto nuevo, lo añade mediante spread syntax `[...prevCart, { ...item, quantity }]`.
+* **`removeItem(itemId)`:** Remueve elementos de forma reactiva e inmutable mediante `.filter()`.
+* **`clear()`:** Vacía la orden restableciendo el estado a `[]`.
+* **`isInCart(id)`:** Retorna un booleano determinando la existencia previa mediante `.some()`.
+* **Cálculos derivados:** `totalItems` y `totalPrice` calculados en tiempo de render con `.reduce()`.
+
+### 3. Vistas y Renderizado Condicional
+* **`CartWidget.jsx`:** Insignia interactiva en el Navbar que refleja el total de prendas y se oculta si no hay artículos (`totalItems === 0`).
+* **`ItemDetail.jsx`:** Al pulsar "Agregar al carrito", alterna el selector de cantidades por accesos directos ("Terminar mi compra" hacia `/cart` y "Seguir comprando").
+* **`Cart.jsx`:** Vista dedicada en `/cart` con renderizado condicional doble (aviso de carrito vacío con redirección al catálogo vs. desglose de prendas, subtotales, total acumulado y botones de acción).

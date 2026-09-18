@@ -1,15 +1,17 @@
-import React from "react";
+// src/components/CartWidget.jsx
+import React from 'react';
+import { useCart } from '../context/CartContext';
 
-// Componente independiente encargado de mostrar el carrito y su notificación
 function CartWidget() {
+  const { totalItems } = useCart();
+
   return (
     <div className="cart-widget">
-      {/* Icono de carrito usando emoji accesible */}
       <span className="cart-icon" role="img" aria-label="carrito">
         🛒
       </span>
-      {/* Número de notificación hardcodeado (ej. 3 unidades) */}
-      <span className="cart-badge">3</span>
+      {/* Muestra la burbuja numérica únicamente si hay al menos 1 producto */}
+      {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
     </div>
   );
 }
