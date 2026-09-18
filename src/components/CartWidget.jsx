@@ -10,7 +10,6 @@ function CartWidget() {
       <span className="cart-icon" role="img" aria-label="carrito">
         🛒
       </span>
-      {/* Muestra la burbuja numérica únicamente si hay al menos 1 producto */}
       {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
     </div>
   );

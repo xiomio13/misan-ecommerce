@@ -1,49 +1,43 @@
 // src/components/ItemDetail.jsx
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import ItemCount from "./ItemCount";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import ItemCount from './ItemCount';
 
 function ItemDetail({ product }) {
-  const {
-    name,
-    img,
-    price,
-    category,
-    description,
-    stock,
-    material,
-    fit,
-    sizes,
-    sku,
-  } = product;
+  const { name, img, price, category, description, stock, material, fit, sizes, sku } = product;
 
-  // Estado para la talla seleccionada (inicia con la primera disponible)
-  const [selectedSize, setSelectedSize] = useState(
-    sizes && sizes.length > 0 ? sizes[0] : null,
-  );
+  // Estado para la talla seleccionada
+  const [selectedSize, setSelectedSize] = useState(sizes && sizes.length > 0 ? sizes[0] : null);
 
-  // Estado local para alternar la vista una vez que se agregan productos
+  // Estado local para alternar contador vs botón de terminar compra
   const [addedQuantity, setAddedQuantity] = useState(0);
 
-  // Extraemos la función global de agregar al carrito
+  // Reiniciar estado al cambiar de polo
+  useEffect(() => {
+    setAddedQuantity(0);
+    if (sizes && sizes.length > 0) {
+      setSelectedSize(sizes[0]);
+    }
+  }, [product.id]);
+
+  // Consumimos el contexto global
   const { addItem } = useCart();
 
   const handleAddToCart = (quantity) => {
     setAddedQuantity(quantity);
-    // Agregamos al contexto el producto con la talla elegida y la cantidad
     addItem({ ...product, selectedSize }, quantity);
   };
 
   return (
     <article className="item-detail-layout">
-      {/* Columna Izquierda: Imagen Principal */}
+      {/* Columna Izquierda: Imagen */}
       <div className="item-detail-media">
         <img src={img} alt={name} className="item-detail-image" />
         <span className="item-detail-badge">{category}</span>
       </div>
 
-      {/* Columna Derecha: Información Técnica y Acciones de Compra */}
+      {/* Columna Derecha: Información y Acciones */}
       <div className="item-detail-info">
         <span className="item-detail-sku">SKU: {sku}</span>
         <h1 className="item-detail-title">{name}</h1>
@@ -70,7 +64,7 @@ function ItemDetail({ product }) {
           </div>
         </div>
 
-        {/* Selector interactivo de tallas */}
+        {/* Selector de tallas */}
         <div className="item-detail-sizes">
           <h4>
             Talla seleccionada: <strong>{selectedSize}</strong>
@@ -80,7 +74,7 @@ function ItemDetail({ product }) {
               <button
                 key={size}
                 type="button"
-                className={`size-pill-btn ${selectedSize === size ? "active" : ""}`}
+                className={`size-pill-btn ${selectedSize === size ? 'active' : ''}`}
                 onClick={() => setSelectedSize(size)}
               >
                 {size}
@@ -89,13 +83,12 @@ function ItemDetail({ product }) {
           </div>
         </div>
 
-        {/* Renderizado condicional: Contador vs Botones de Compra */}
+        {/* Renderizado condicional */}
         <div className="item-detail-actions">
           {addedQuantity > 0 ? (
             <div className="checkout-cta-box">
               <p className="item-added-alert">
-                ✓ ¡Agregaste {addedQuantity} unidad(es) de talla{" "}
-                <strong>{selectedSize}</strong> al carrito!
+                ✓ ¡Agregaste {addedQuantity} unidad(es) de talla <strong>{selectedSize}</strong> al carrito!
               </p>
               <div className="cta-buttons-group">
                 <Link to="/cart" className="btn-go-cart">

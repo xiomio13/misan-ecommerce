@@ -6,7 +6,7 @@ import { useCart } from '../context/CartContext';
 function Cart() {
   const { cart, removeItem, clear, totalPrice, totalItems } = useCart();
 
-  // 1. Escenario Carrito Vacío
+  // Escenario: Carrito vacío
   if (cart.length === 0) {
     return (
       <section className="cart-empty-container">
@@ -19,7 +19,7 @@ function Cart() {
     );
   }
 
-  // 2. Escenario Carrito con Productos
+  // Escenario: Carrito con productos
   return (
     <section className="cart-view-container">
       <header className="cart-header">
@@ -28,12 +28,12 @@ function Cart() {
       </header>
 
       <div className="cart-content-grid">
-        {/* Lista de productos agregados */}
+        {/* Lista de productos */}
         <div className="cart-items-list">
           {cart.map((item) => (
             <article key={item.id} className="cart-item-card">
               <img src={item.img} alt={item.name} className="cart-item-thumbnail" />
-              
+
               <div className="cart-item-details">
                 <h3>{item.name}</h3>
                 {item.selectedSize && (
@@ -44,7 +44,7 @@ function Cart() {
                 <p className="cart-item-subtotal">Subtotal: S/ {item.price * item.quantity}.00</p>
               </div>
 
-              {/* Eliminación individual */}
+              {/* Botón de eliminar en la esquina superior derecha */}
               <button
                 type="button"
                 className="btn-remove-item"
@@ -58,10 +58,10 @@ function Cart() {
           ))}
         </div>
 
-        {/* Panel lateral con el resumen total y acciones */}
+        {/* Resumen y Totales */}
         <aside className="cart-summary-card">
           <h2>Total de la Orden</h2>
-          
+
           <div className="summary-breakdown">
             <div className="summary-row">
               <span>Artículos seleccionados:</span>

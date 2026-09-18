@@ -13,33 +13,31 @@ import './App.css';
 function App() {
   return (
     <BrowserRouter>
-      {/* Proveedor de Estado Global del Carrito */}
       <CartProvider>
         <div className="app-layout">
-          {/* Header persistente con logo, categorías y CartWidget */}
           <Navbar />
 
           <main className="main-content">
             <Routes>
-              {/* 1. Catálogo completo */}
+              {/* Catálogo completo */}
               <Route 
                 path="/" 
                 element={<ItemListContainer greeting="¡Bienvenido a Misan! Lo mejor en moda masculina" />} 
               />
 
-              {/* 2. Catálogo filtrado por categoría */}
+              {/* Catálogo por categoría */}
               <Route 
                 path="/category/:categoryId" 
                 element={<ItemListContainer greeting="Catálogo por Categoría" />} 
               />
 
-              {/* 3. Ficha de detalle de producto individual */}
+              {/* Detalle de producto individual */}
               <Route 
                 path="/item/:itemId" 
                 element={<ItemDetailContainer />} 
               />
 
-              {/* 4. Vista dedicada del carrito de compras (Pre-entrega 6) */}
+              {/* Vista del carrito de compras */}
               <Route 
                 path="/cart" 
                 element={<Cart />} 
@@ -51,7 +49,7 @@ function App() {
                 element={<Navigate to="/" replace />} 
               />
 
-              {/* 5. Vista 404 para URLs no válidas */}
+              {/* 404 Not Found */}
               <Route 
                 path="*" 
                 element={<NotFound />} 
@@ -59,7 +57,6 @@ function App() {
             </Routes>
           </main>
 
-          {/* Footer persistente */}
           <Footer />
         </div>
       </CartProvider>

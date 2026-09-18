@@ -85,17 +85,17 @@ La aplicación cuenta con un enrutador centralizado montado con `BrowserRouter` 
 ## 🛒 Estado Global del Carrito con Context API (Pre-entrega 6)
 
 ### 1. Arquitectura de Estado Global (`CartContext.jsx`)
-* **`CartProvider`:** Envuelve el árbol de componentes dentro del enrutador en `App.jsx`, permitiendo acceso transversal al estado de compras sin incurrir en *prop drilling*.
-* **Custom Hook `useCart`:** Facilita el consumo seguro y centralizado del contexto validando su envoltura.
+* **`CartProvider`:** Envuelve el árbol de componentes dentro del enrutador en `App.jsx`, centralizando el estado del carrito sin incurrir en *prop drilling*.
+* **Custom Hook `useCart`:** Proporciona un acceso seguro y modular al contexto validando su envoltura previa.
 
-### 2. Gestión Inmutable y Métodos Principales
-* **`addItem(item, quantity)`:** Comprueba duplicados con `.find()`. Si el producto ya está en el carrito, genera un nuevo estado sumando las unidades con `.map()`; si es un producto nuevo, lo añade mediante spread syntax `[...prevCart, { ...item, quantity }]`.
-* **`removeItem(itemId)`:** Remueve elementos de forma reactiva e inmutable mediante `.filter()`.
-* **`clear()`:** Vacía la orden restableciendo el estado a `[]`.
-* **`isInCart(id)`:** Retorna un booleano determinando la existencia previa mediante `.some()`.
-* **Cálculos derivados:** `totalItems` y `totalPrice` calculados en tiempo de render con `.reduce()`.
+### 2. Métodos e Inmutabilidad Estricta
+* **`addItem(item, quantity)`:** Comprueba si el producto ya existe con `.find()`. Si existe, actualiza la cantidad acumulada mediante `.map()` respetando el límite de `stock`; si es nuevo, lo incorpora mediante spread syntax `[...prevCart, { ...item, quantity }]`.
+* **`removeItem(itemId)`:** Elimina productos individualmente de forma inmutable usando `.filter()`.
+* **`clear()`:** Vacía el carrito restableciendo el estado a `[]`.
+* **`isInCart(id)`:** Valida existencias devolviendo un booleano mediante `.some()`.
+* **Cálculos en tiempo de render:** `totalItems` (unidades totales) y `totalPrice` (monto total) calculados reactivamente con `.reduce()`.
 
 ### 3. Vistas y Renderizado Condicional
-* **`CartWidget.jsx`:** Insignia interactiva en el Navbar que refleja el total de prendas y se oculta si no hay artículos (`totalItems === 0`).
-* **`ItemDetail.jsx`:** Al pulsar "Agregar al carrito", alterna el selector de cantidades por accesos directos ("Terminar mi compra" hacia `/cart` y "Seguir comprando").
-* **`Cart.jsx`:** Vista dedicada en `/cart` con renderizado condicional doble (aviso de carrito vacío con redirección al catálogo vs. desglose de prendas, subtotales, total acumulado y botones de acción).
+* **`CartWidget.jsx`:** Burbuja reactiva en el `Navbar` conectada al contexto que muestra el conteo total y se oculta automáticamente si no hay artículos (`totalItems === 0`).
+* **`ItemDetail.jsx`:** Al agregar unidades, oculta el contador `ItemCount` y activa accesos directos ("Terminar mi compra" hacia `/cart` y "Seguir comprando").
+* **`Cart.jsx`:** Vista dedicada en `/cart` con renderizado condicional doble (aviso y botón de regreso si está vacío vs. desglose detallado con imagen, talla, subtotales, botón de eliminación superior derecha, total general y vaciado de orden).
