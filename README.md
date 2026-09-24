@@ -20,82 +20,114 @@ Aplicación web interactiva de comercio electrónico desarrollada con **React** 
    git clone [https://github.com/xiomio13/misan-ecommerce.git](https://github.com/xiomio13/misan-ecommerce.git)
    ```
 
-
 ---
 
 ## 🧩 Componentes del Layout (Pre-entrega 2)
 
-* **`Navbar`:** Barra de navegación superior con el logotipo de Misan, menú con categorías comerciales de polos y contenedor para el carrito de compras.
-* **`CartWidget`:** Componente modular ubicado dentro del `Navbar` que renderiza el icono del carrito y la burbuja de notificación con la cantidad de artículos.
-* **`ItemListContainer`:** Contenedor principal que recibe una prop `greeting` y muestra un mensaje de bienvenida personalizado y centrado en la vista.
-
+- **`Navbar`:** Barra de navegación superior con el logotipo de Misan, menú con categorías comerciales de polos y contenedor para el carrito de compras.
+- **`CartWidget`:** Componente modular ubicado dentro del `Navbar` que renderiza el icono del carrito y la burbuja de notificación con la cantidad de artículos.
+- **`ItemListContainer`:** Contenedor principal que recibe una prop `greeting` y muestra un mensaje de bienvenida personalizado y centrado en la vista.
 
 ## ⚡ Flujo Asíncrono y Renderizado Dinámico (Pre-entrega 3)
 
 ### 1. Simulación de API (`asyncMock.js`)
-* Se exporta la función `getProducts` que retorna una `Promise`.
-* Se implementó un retardo simulado de red de `2000ms` usando `setTimeout`.
+
+- Se exporta la función `getProducts` que retorna una `Promise`.
+- Se implementó un retardo simulado de red de `2000ms` usando `setTimeout`.
 
 ### 2. Ciclo de Vida y Estado (`ItemListContainer.jsx`)
-* El estado `items` se inicializa como un array vacío (`[]`).
-* Se utiliza `useEffect` con array de dependencias vacío (`[]`) para disparar la carga de datos exclusivamente durante la fase de montaje.
-* Implementación de flujo `async/await` con manejo de estados `loading` para mejorar la experiencia de usuario (UX).
+
+- El estado `items` se inicializa como un array vacío (`[]`).
+- Se utiliza `useEffect` con array de dependencias vacío (`[]`) para disparar la carga de datos exclusivamente durante la fase de montaje.
+- Implementación de flujo `async/await` con manejo de estados `loading` para mejorar la experiencia de usuario (UX).
 
 ### 3. Separación de Responsabilidades
-* **`ItemListContainer`:** Componente contenedor enfocado en la obtención de datos y gestión de estado.
-* **`ItemList`:** Componente presentacional encargado de iterar (`.map()`) la colección recibida por props.
-* **`Item`:** Componente atómico que dibuja la card individual de cada polo, asociando `key={product.id}` de forma única y estable.
+
+- **`ItemListContainer`:** Componente contenedor enfocado en la obtención de datos y gestión de estado.
+- **`ItemList`:** Componente presentacional encargado de iterar (`.map()`) la colección recibida por props.
+- **`Item`:** Componente atómico que dibuja la card individual de cada polo, asociando `key={product.id}` de forma única y estable.
 
 ## 🔍 Detalle de Producto, Enrutamiento Dinámico y Pruebas Unitarias (Pre-entrega 4)
 
 ### 1. Búsqueda Asíncrona Dinámica (`getProductById`)
-* Función exportada en `src/mock/asyncMock.js` que recibe un identificador (`productId`).
-* Retorna una `Promise` que resuelve con el objeto coincidente tras un retardo simulado de red de `1500ms`, o rechaza con un `Error` descriptivo si el ID no existe en el catálogo.
+
+- Función exportada en `src/mock/asyncMock.js` que recibe un identificador (`productId`).
+- Retorna una `Promise` que resuelve con el objeto coincidente tras un retardo simulado de red de `1500ms`, o rechaza con un `Error` descriptivo si el ID no existe en el catálogo.
 
 ### 2. Navegación Dinámica (`react-router-dom`)
-* **Ruta dinámica `/item/:itemId`:** Conectada en `App.jsx` mediante `BrowserRouter` y `Routes`.
-* **Hook `useParams`:** Implementado en `ItemDetailContainer` para capturar el segmento dinámico de la URL de forma reactiva dentro de las dependencias de `useEffect`.
-* **Navegación declarativa:** Tarjetas `Item` enlazadas mediante `<Link to={`/item/${id}`}>`.
+
+- **Ruta dinámica `/item/:itemId`:** Conectada en `App.jsx` mediante `BrowserRouter` y `Routes`.
+- **Hook `useParams`:** Implementado en `ItemDetailContainer` para capturar el segmento dinámico de la URL de forma reactiva dentro de las dependencias de `useEffect`.
+- **Navegación declarativa:** Tarjetas `Item` enlazadas mediante `<Link to={`/item/${id}`}>`.
 
 ### 3. Componentes y Separación de Responsabilidades
-* **`ItemDetailContainer`:** Componente contenedor enfocado en la lógica asíncrona, control de estados (`product`, `loading`, `error`) y captura de parámetros de ruta.
-* **`ItemDetail`:** Componente puramente presentacional que distribuye la ficha técnica (material, calce, tallas, precio, stock e imágenes).
-* **`ItemCount`:** Componente modular reutilizable que gestiona la selección de unidades respetando los límites reales del producto (`0 <= count <= stock`).
+
+- **`ItemDetailContainer`:** Componente contenedor enfocado en la lógica asíncrona, control de estados (`product`, `loading`, `error`) y captura de parámetros de ruta.
+- **`ItemDetail`:** Componente puramente presentacional que distribuye la ficha técnica (material, calce, tallas, precio, stock e imágenes).
+- **`ItemCount`:** Componente modular reutilizable que gestiona la selección de unidades respetando los límites reales del producto (`0 <= count <= stock`).
 
 ### 4. Cobertura de Pruebas Unitarias (Vitest & Testing Library)
-* **`asyncMock.test.js`:** Valida la resolución correcta de la promesa con datos reales y su rechazo ante identificadores no encontrados.
-* **`ItemCount.test.jsx`:** Valida que el contador respete los topes de cantidad (límite inferior `0` y límite superior `stock`) y la llamada a la función de adición.
-* **Ejecución local de pruebas:** `npm run test`
+
+- **`asyncMock.test.js`:** Valida la resolución correcta de la promesa con datos reales y su rechazo ante identificadores no encontrados.
+- **`ItemCount.test.jsx`:** Valida que el contador respete los topes de cantidad (límite inferior `0` y límite superior `stock`) y la llamada a la función de adición.
+- **Ejecución local de pruebas:** `npm run test`
 
 ## 🧭 Arquitectura de Navegación Completa (Pre-entrega 5)
 
 ### 1. Sistema de Enrutamiento (`react-router-dom`)
+
 La aplicación cuenta con un enrutador centralizado montado con `BrowserRouter` en `App.jsx`, manteniendo un layout compartido (`Navbar` y `Footer`) persistente en todo momento:
-* **`/` (Inicio):** Carga el catálogo completo de polos mediante `ItemListContainer`.
-* **`/category/:categoryId`:** Filtra dinámicamente los productos según el parámetro capturado con `useParams`.
-* **`/item/:itemId`:** Monta la ficha técnica extendida y selector de stock del producto seleccionado.
-* **`*` (Error 404):** Captura URLs inexistentes y ofrece navegación controlada hacia la raíz con el componente `NotFound`.
+
+- **`/` (Inicio):** Carga el catálogo completo de polos mediante `ItemListContainer`.
+- **`/category/:categoryId`:** Filtra dinámicamente los productos según el parámetro capturado con `useParams`.
+- **`/item/:itemId`:** Monta la ficha técnica extendida y selector de stock del producto seleccionado.
+- **`*` (Error 404):** Captura URLs inexistentes y ofrece navegación controlada hacia la raíz con el componente `NotFound`.
 
 ### 2. Navegación SPA Declarativa
-* **`NavLink`:** Aplicado en el menú superior para resaltar automáticamente la categoría seleccionada mediante la clase `.active`.
-* **`Link`:** Empleado en tarjetas de producto (`Item`), el logotipo de la marca y la vista de error para transicionar entre vistas sin recargas de página.
-* **Sincronización Reactiva:** `ItemListContainer` escucha los cambios en `categoryId` mediante el array de dependencias de `useEffect([categoryId])`, resolviendo la promesa correspondiente de forma automática.
 
+- **`NavLink`:** Aplicado en el menú superior para resaltar automáticamente la categoría seleccionada mediante la clase `.active`.
+- **`Link`:** Empleado en tarjetas de producto (`Item`), el logotipo de la marca y la vista de error para transicionar entre vistas sin recargas de página.
+- **Sincronización Reactiva:** `ItemListContainer` escucha los cambios en `categoryId` mediante el array de dependencias de `useEffect([categoryId])`, resolviendo la promesa correspondiente de forma automática.
 
 ## 🛒 Estado Global del Carrito con Context API (Pre-entrega 6)
 
 ### 1. Arquitectura de Estado Global (`CartContext.jsx`)
-* **`CartProvider`:** Envuelve el árbol de componentes dentro del enrutador en `App.jsx`, centralizando el estado del carrito sin incurrir en *prop drilling*.
-* **Custom Hook `useCart`:** Proporciona un acceso seguro y modular al contexto validando su envoltura previa.
+
+- **`CartProvider`:** Envuelve el árbol de componentes dentro del enrutador en `App.jsx`, centralizando el estado del carrito sin incurrir en _prop drilling_.
+- **Custom Hook `useCart`:** Proporciona un acceso seguro y modular al contexto validando su envoltura previa.
 
 ### 2. Métodos e Inmutabilidad Estricta
-* **`addItem(item, quantity)`:** Comprueba si el producto ya existe con `.find()`. Si existe, actualiza la cantidad acumulada mediante `.map()` respetando el límite de `stock`; si es nuevo, lo incorpora mediante spread syntax `[...prevCart, { ...item, quantity }]`.
-* **`removeItem(itemId)`:** Elimina productos individualmente de forma inmutable usando `.filter()`.
-* **`clear()`:** Vacía el carrito restableciendo el estado a `[]`.
-* **`isInCart(id)`:** Valida existencias devolviendo un booleano mediante `.some()`.
-* **Cálculos en tiempo de render:** `totalItems` (unidades totales) y `totalPrice` (monto total) calculados reactivamente con `.reduce()`.
+
+- **`addItem(item, quantity)`:** Comprueba si el producto ya existe con `.find()`. Si existe, actualiza la cantidad acumulada mediante `.map()` respetando el límite de `stock`; si es nuevo, lo incorpora mediante spread syntax `[...prevCart, { ...item, quantity }]`.
+- **`removeItem(itemId)`:** Elimina productos individualmente de forma inmutable usando `.filter()`.
+- **`clear()`:** Vacía el carrito restableciendo el estado a `[]`.
+- **`isInCart(id)`:** Valida existencias devolviendo un booleano mediante `.some()`.
+- **Cálculos en tiempo de render:** `totalItems` (unidades totales) y `totalPrice` (monto total) calculados reactivamente con `.reduce()`.
 
 ### 3. Vistas y Renderizado Condicional
-* **`CartWidget.jsx`:** Burbuja reactiva en el `Navbar` conectada al contexto que muestra el conteo total y se oculta automáticamente si no hay artículos (`totalItems === 0`).
-* **`ItemDetail.jsx`:** Al agregar unidades, oculta el contador `ItemCount` y activa accesos directos ("Terminar mi compra" hacia `/cart` y "Seguir comprando").
-* **`Cart.jsx`:** Vista dedicada en `/cart` con renderizado condicional doble (aviso y botón de regreso si está vacío vs. desglose detallado con imagen, talla, subtotales, botón de eliminación superior derecha, total general y vaciado de orden).
+
+- **`CartWidget.jsx`:** Burbuja reactiva en el `Navbar` conectada al contexto que muestra el conteo total y se oculta automáticamente si no hay artículos (`totalItems === 0`).
+- **`ItemDetail.jsx`:** Al agregar unidades, oculta el contador `ItemCount` y activa accesos directos ("Terminar mi compra" hacia `/cart` y "Seguir comprando").
+- **`Cart.jsx`:** Vista dedicada en `/cart` con renderizado condicional doble (aviso y botón de regreso si está vacío vs. desglose detallado con imagen, talla, subtotales, botón de eliminación superior derecha, total general y vaciado de orden).
+
+## 🔥 Integración con Firebase & Cloud Firestore (Pre-entrega 7)
+
+### 1. Backend as a Service (BaaS)
+
+- **Cloud Firestore:** Catálogo de productos consultado de forma asíncrona mediante las funciones modulares del SDK de Firebase (`collection`, `getDocs`, `query`, `where`, `doc`, `getDoc`).
+- **Firebase Authentication:** Gestión de cuentas mediante correo electrónico y contraseña (`createUserWithEmailAndPassword`, `signInWithEmailAndPassword`, `signOut`), administrado globalmente por `AuthContext` con persistencia mediante `onAuthStateChanged`.
+
+### 2. Colecciones y Modelo de Datos
+
+- **`products`:** Documentos con datos tipados (`name`, `price` [int64], `stock` [int64], `categorySlug`, `sizes` [array], `img`, `description`, `material`, `fit`, `sku`).
+- **`orders`:** Persistencia transaccional de pedidos confirmados:
+  - `buyer`: Datos del cliente autenticado (`email`, `name`, `phone`, `address`, `city`).
+  - `items`: Detalle de prendas adquiridas (`id`, `name`, `price`, `quantity`, `size`, `subtotal`).
+  - `total`: Importe liquidado en soles.
+  - `date`: Marca temporal de servidor (`serverTimestamp()`).
+  - `status`: Estado de procesamiento (`generada`).
+
+### 3. Sincronización y Reglas de Negocio
+
+- Al generar la compra con `addDoc`, se actualiza el stock remanente en `products` mediante `updateDoc` y se vacía el carrito reactivamente.
+- Claves únicas compuestas (`${item.id}-${item.selectedSize}`) en la vista del carrito para asegurar reconciliación libre de colisiones al manejar variantes de talla.

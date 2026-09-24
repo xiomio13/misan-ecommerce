@@ -1,31 +1,36 @@
 // src/components/ItemDetailContainer.jsx
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { getProductById } from "../mock/asyncMock";
-import ItemDetail from "./ItemDetail";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import ItemDetail from './ItemDetail';
 
 function ItemDetailContainer() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Captura dinámica del ID desde la URL (/item/:itemId)
   const { itemId } = useParams();
 
   useEffect(() => {
-    // Si no hay parámetro en la URL, toma 'polo-01' por defecto
-    const idToSearch = itemId || "polo-01";
-
     setLoading(true);
     setError(null);
 
-    getProductById(idToSearch)
-      .then((res) => {
-        setProduct(res);
+    // 1. Referencia directa al documento por su ID
+    const docRef = doc(db, 'products', itemId);
+
+    // 2. Consulta asíncrona del documento
+    getDoc(docRef)
+      .then((docSnap) => {
+        if (docSnap.exists()) {
+          setProduct({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          setError(`El producto con identificador "${itemId}" no existe.`);
+        }
       })
       .catch((err) => {
-        console.error(err);
-        setError(err.message || "No se pudo cargar el producto.");
+        console.error('Error al obtener el producto:', err);
+        setError('Ocurrió un error al obtener la información del producto.');
       })
       .finally(() => {
         setLoading(false);
@@ -36,16 +41,16 @@ function ItemDetailContainer() {
     return (
       <div className="loader-container">
         <div className="spinner"></div>
-        <p>Cargando información del polo...</p>
+        <p>Cargando detalle del producto desde Firestore...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="detail-error">
-        <h2>Producto no disponible</h2>
-        <p>{error}</p>
+      <div className="detail-error-container" style={{ textAlign: 'center', padding: '2rem' }}>
+        <h2>Lo sentimos</h2>
+        <p style={{ color: '#e63946' }}>{error}</p>
       </div>
     );
   }
