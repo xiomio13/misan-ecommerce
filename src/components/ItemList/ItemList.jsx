@@ -1,9 +1,10 @@
 import React from "react";
-import Item from "./Item";
+import Item from "../Item/Item";
+import styles from "./ItemList.module.css";
 
 function ItemList({ items }) {
   return (
-    <div className="item-list-grid">
+    <div className={styles.grid}>
       {items.map((product) => (
         <Item key={product.id} product={product} />
       ))}

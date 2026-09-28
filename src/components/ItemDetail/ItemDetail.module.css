@@ -1,0 +1,131 @@
+.detailCard {
+  max-width: 1000px;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  padding: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .detailCard {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 480px;
+  background-color: #f1f3f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #1d3557;
+  margin-bottom: 0.5rem;
+}
+
+.sku {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #e63946;
+  margin-bottom: 1.5rem;
+}
+
+.specsList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.specsList strong {
+  color: #1d3557;
+}
+
+.sizesBlock {
+  margin-bottom: 1.5rem;
+}
+
+.sizesLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1d3557;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.sizesList {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sizeBtn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #ced4da;
+  background-color: #ffffff;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #1d3557;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sizeBtn:hover {
+  border-color: #1d3557;
+}
+
+.sizeBtnActive {
+  background-color: #1d3557;
+  color: #ffffff;
+  border-color: #1d3557;
+}
+
+.btnFinish {
+  display: inline-block;
+  background-color: #2a9d8f;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+}
+
+.btnFinish:hover {
+  background-color: #21867a;
+}

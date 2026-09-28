@@ -1,9 +1,9 @@
-// src/components/ItemDetailContainer.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase/config';
-import ItemDetail from './ItemDetail';
+import { db } from '../../firebase/config';
+import ItemDetail from '../ItemDetail/ItemDetail';
+import styles from './ItemDetailContainer.module.css';
 
 function ItemDetailContainer() {
   const [product, setProduct] = useState(null);
@@ -13,34 +13,34 @@ function ItemDetailContainer() {
   const { itemId } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
 
-    // 1. Referencia directa al documento por su ID
-    const docRef = doc(db, 'products', itemId);
+      try {
+        const docRef = doc(db, 'products', itemId);
+        const docSnap = await getDoc(docRef);
 
-    // 2. Consulta asíncrona del documento
-    getDoc(docRef)
-      .then((docSnap) => {
         if (docSnap.exists()) {
           setProduct({ id: docSnap.id, ...docSnap.data() });
         } else {
           setError(`El producto con identificador "${itemId}" no existe.`);
         }
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('Error al obtener el producto:', err);
         setError('Ocurrió un error al obtener la información del producto.');
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProduct();
   }, [itemId]);
 
   if (loading) {
     return (
-      <div className="loader-container">
-        <div className="spinner"></div>
+      <div className={styles.loader}>
+        <div className={styles.spinner}></div>
         <p>Cargando detalle del producto desde Firestore...</p>
       </div>
     );
@@ -48,15 +48,15 @@ function ItemDetailContainer() {
 
   if (error) {
     return (
-      <div className="detail-error-container" style={{ textAlign: 'center', padding: '2rem' }}>
-        <h2>Lo sentimos</h2>
-        <p style={{ color: '#e63946' }}>{error}</p>
+      <div className={styles.errorBox}>
+        <h2 className={styles.errorTitle}>Lo sentimos</h2>
+        <p className={styles.errorText}>{error}</p>
       </div>
     );
   }
 
   return (
-    <section className="item-detail-container">
+    <section className={styles.container}>
       {product && <ItemDetail product={product} />}
     </section>
   );

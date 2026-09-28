@@ -1,9 +1,9 @@
-// src/components/ItemListContainer.jsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../firebase/config";
-import ItemList from "./ItemList";
+import { db } from "../../firebase/config";
+import ItemList from "../ItemList/ItemList";
+import styles from "./ItemListContainer.module.css";
 
 function ItemListContainer({ greeting }) {
   const [items, setItems] = useState([]);
@@ -13,35 +13,34 @@ function ItemListContainer({ greeting }) {
   const { categoryId } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchCatalog = async () => {
+      setLoading(true);
+      setError(null);
 
-    // 1. Referencia a la colección 'products' en Firestore
-    const productsRef = collection(db, "products");
+      try {
+        const productsRef = collection(db, "products");
+        const q = categoryId
+          ? query(productsRef, where("categorySlug", "==", categoryId))
+          : productsRef;
 
-    // 2. Filtrado condicional: si hay categoría en la URL usamos query + where
-    const q = categoryId
-      ? query(productsRef, where("categorySlug", "==", categoryId))
-      : productsRef;
-
-    // 3. Consulta asíncrona a Firestore
-    getDocs(q)
-      .then((snapshot) => {
+        const snapshot = await getDocs(q);
         const loadedProducts = snapshot.docs.map((docSnap) => ({
           id: docSnap.id,
           ...docSnap.data(),
         }));
+
         setItems(loadedProducts);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error al obtener productos de Firestore:", err);
         setError(
           "Ocurrió un error al cargar los productos. Intenta nuevamente.",
         );
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCatalog();
   }, [categoryId]);
 
   const titlesMap = {
@@ -56,10 +55,10 @@ function ItemListContainer({ greeting }) {
     : greeting;
 
   return (
-    <section className="item-list-container">
-      <header className="catalog-header">
+    <section className={styles.container}>
+      <header className={styles.header}>
         <h1>{currentTitle}</h1>
-        <p className="item-list-subtitle">
+        <p className={styles.subtitle}>
           {categoryId
             ? "Explora las opciones disponibles en este estilo."
             : "Colección completa y exclusiva de polos para caballero."}
@@ -67,16 +66,14 @@ function ItemListContainer({ greeting }) {
       </header>
 
       {loading ? (
-        <div className="loader-container">
-          <div className="spinner"></div>
+        <div className={styles.loader}>
+          <div className={styles.spinner}></div>
           <p>Cargando productos desde Firestore...</p>
         </div>
       ) : error ? (
-        <p style={{ textAlign: "center", color: "#e63946", padding: "2rem" }}>
-          {error}
-        </p>
+        <p className={styles.errorText}>{error}</p>
       ) : items.length === 0 ? (
-        <p style={{ textAlign: "center", padding: "2rem" }}>
+        <p className={styles.emptyText}>
           No hay productos disponibles en esta categoría.
         </p>
       ) : (

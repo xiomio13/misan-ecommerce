@@ -1,0 +1,109 @@
+.authContainer {
+  max-width: 420px;
+  margin: 3.5rem auto;
+  padding: 2.5rem 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  color: #1d3557;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.errorBanner {
+  background-color: #ffebee;
+  color: #e63946;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1d3557;
+}
+
+.input {
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #1d3557;
+}
+
+.btnSubmit {
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  background-color: #1d3557;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btnSubmit:hover:not(:disabled) {
+  background-color: #457b9d;
+}
+
+.btnSubmit:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.toggleWrapper {
+  margin-top: 1.8rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: #6c757d;
+}
+
+.btnToggle {
+  background: none;
+  border: none;
+  color: #e63946;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 0.4rem;
+  font-size: 0.88rem;
+  text-decoration: underline;
+}
+
+.btnToggle:hover {
+  color: #c1121f;
+}

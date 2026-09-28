@@ -1,7 +1,7 @@
-// src/components/ItemCount.jsx
 import React, { useState } from "react";
+import styles from "./ItemCount.module.css";
 
-function ItemCount({ stock, initial = 1, onAdd }) {
+function ItemCount({ stock = 0, initial = 1, onAdd }) {
   const [count, setCount] = useState(initial);
 
   const handleIncrement = () => {
@@ -11,26 +11,26 @@ function ItemCount({ stock, initial = 1, onAdd }) {
   };
 
   const handleDecrement = () => {
-    if (count > 0) {
+    if (count > 1) {
       setCount((prev) => prev - 1);
     }
   };
 
   return (
-    <div className="item-count-box">
-      <div className="counter-controls">
+    <div className={styles.countContainer}>
+      <div className={styles.controls}>
         <button
           type="button"
-          className="btn-counter"
+          className={styles.btnControl}
           onClick={handleDecrement}
-          disabled={count <= 0}
+          disabled={count <= 1}
         >
           -
         </button>
-        <span className="counter-number">{count}</span>
+        <span className={styles.countValue}>{count}</span>
         <button
           type="button"
-          className="btn-counter"
+          className={styles.btnControl}
           onClick={handleIncrement}
           disabled={count >= stock}
         >
@@ -40,11 +40,11 @@ function ItemCount({ stock, initial = 1, onAdd }) {
 
       <button
         type="button"
-        className="btn-add-cart"
-        disabled={stock === 0 || count === 0}
-        onClick={() => count > 0 && onAdd && onAdd(count)}
+        className={styles.btnAdd}
+        onClick={() => onAdd(count)}
+        disabled={stock === 0}
       >
-        {stock === 0 ? "Agotado" : "Agregar al carrito"}
+        {stock === 0 ? "Sin stock disponible" : "Agregar al carrito"}
       </button>
     </div>
   );

@@ -1,133 +1,141 @@
 # 👕 Misan - Tienda Online de Polos para Caballero
 
-Aplicación web interactiva de comercio electrónico desarrollada con **React** y **Vite**, enfocada en la venta de polos premium para caballeros (clásicos, slim fit y oversize).
+**Misan** es una Single Page Application (SPA) de comercio electrónico moderna y escalable, especializada en la venta exclusiva de polos de alta gama para caballero (cortes Clásicos, Slim Fit, Oversize y Piqué).
+
+Desarrollada con **React**, **Vite** y conectada a la nube mediante **Firebase** (Cloud Firestore y Firebase Authentication), implementando arquitectura modular basada en componentes, enrutamiento dinámico, contexto global para el carrito y persistencia transaccional de compras en tiempo real.
 
 ---
 
 ## 🚀 Tecnologías Utilizadas
 
-- **React** (Componentes Funcionales y Hooks)
-- **Vite** (Herramienta de compilación y empaquetado)
-- **JavaScript (ES6+)**
-- **Git y GitHub** (Control de versiones)
+- **React 18 / 19** (Componentes Funcionales, Custom Hooks, Context API)
+- **Vite** (Build Tool y entorno de desarrollo ultra-rápido)
+- **React Router DOM 6** (Enrutamiento dinámico, parámetros de URL y rutas protegidas)
+- **Firebase SDK Modular (v10 / v11)**:
+  - **Cloud Firestore**: Base de datos NoSQL documental en la nube para catálogo y órdenes de compra.
+  - **Firebase Authentication**: Gestión de usuarios, registro e inicio de sesión reactivo con persistencia de sesión (`onAuthStateChanged`).
+- **JavaScript Moderno (ES6+)** (Funciones asíncronas con `async/await` y manejo de errores con `try/catch`)
+- **CSS Modules / CSS3** (Estilos modulares y desacoplados por componente)
+- **Git y GitHub** (Control de versiones mediante ramas de características y convenciones de commits)
+
+---
+
+## ✨ Funcionalidades y Arquitectura
+
+- **Catálogo 100% en la Nube:** Productos consultados directamente desde Cloud Firestore mediante consultas condicionales (`query`, `where`).
+- **Navegación Dinámica:** Rutas dedicadas para el catálogo completo (`/`), filtrado por categoría (`/category/:categoryId`) y ficha de detalle individual (`/item/:itemId`).
+- **Ficha Técnica y Stock:** Vista de detalle con especificaciones (composición, calce, tallas) y selector de cantidades (`ItemCount`) condicionado por el stock real.
+- **Carrito Global (`CartContext`):** Manejo de compras global e inmutable sin prop-drilling, cálculo reactivo de subtotales y clave compuesta (`id-talla`) para selección de variantes.
+- **Sesión de Usuario Persistente:** Registro, inicio y cierre de sesión seguro mediante Firebase Authentication.
+- **Checkout Protegido y Transaccional:** Acceso exclusivo a usuarios logueados, validación defensiva en JavaScript de los datos de contacto, persistencia de la orden con `serverTimestamp()` y actualización de stock remanente en tiempo real.
+
+---
+
+## 🔐 Variables de Entorno
+
+El proyecto lee todas las credenciales de Firebase a través de variables de entorno para proteger la configuración.
+
+Crea un archivo `.env` en la raíz del proyecto tomando como guía el archivo `.env.example`:
+
+```env
+VITE_FIREBASE_API_KEY=tu_api_key
+VITE_FIREBASE_AUTH_DOMAIN=tu_auth_domain
+VITE_FIREBASE_PROJECT_ID=tu_project_id
+VITE_FIREBASE_STORAGE_BUCKET=tu_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=tu_messaging_sender_id
+VITE_FIREBASE_APP_ID=tu_app_id
+```
+
+> **Nota de seguridad:** El archivo `.env` se encuentra estrictamente ignorado por `.gitignore` para no exponer credenciales privadas en el repositorio público.
+
+---
+
+## 🗄️ Colecciones en Cloud Firestore
+
+### 1. Colección `products`
+
+Almacena el inventario de polos masculinos disponibles en la tienda:
+
+```json
+{
+  "name": "Polo Piqué Clásico Azul Marino",
+  "category": "Polos Clásicos",
+  "categorySlug": "clasicos",
+  "price": 69,
+  "stock": 12,
+  "img": "https://images.unsplash.com/photo-1581655353564-df123a1eb820",
+  "description": "100% algodón pima peruano con cuello camisero y tejido transpirable.",
+  "material": "Algodón Pima 100%",
+  "fit": "Classic Regular Fit",
+  "sizes": ["S", "M", "L", "XL"],
+  "sku": "MSN-PIQ-001"
+}
+```
+
+### 2. Colección `orders`
+
+Registra las compras completadas de forma atómica en el proceso de Checkout:
+
+```json
+{
+  "user": {
+    "uid": "AB12cd34EF...",
+    "email": "cliente@misan.pe"
+  },
+  "buyer": {
+    "name": "Xiomara Díaz",
+    "phone": "987654321",
+    "address": "Av. Principal 123",
+    "city": "Lima"
+  },
+  "items": [
+    {
+      "id": "polo-01",
+      "name": "Polo Piqué Clásico Azul Marino",
+      "price": 69,
+      "quantity": 2,
+      "size": "M",
+      "subtotal": 138
+    }
+  ],
+  "total": 138,
+  "status": "generada",
+  "createdAt": "ServerTimestamp"
+}
+```
 
 ---
 
 ## 💻 Instrucciones de Instalación y Ejecución Local
 
-1. **Clonar este repositorio:**
+Para clonar, configurar y ejecutar este proyecto en tu entorno local, sigue estos pasos desde la terminal:
+
+1. **Clona el repositorio:**
+
    ```bash
-   git clone [https://github.com/xiomio13/misan-ecommerce.git](https://github.com/xiomio13/misan-ecommerce.git)
+   git clone https://github.com/xiomio13/misan-ecommerce.git
    ```
 
----
+2. **Ingresa a la carpeta del proyecto:**
 
-## 🧩 Componentes del Layout (Pre-entrega 2)
+   ```bash
+   cd misan-ecommerce
+   ```
 
-- **`Navbar`:** Barra de navegación superior con el logotipo de Misan, menú con categorías comerciales de polos y contenedor para el carrito de compras.
-- **`CartWidget`:** Componente modular ubicado dentro del `Navbar` que renderiza el icono del carrito y la burbuja de notificación con la cantidad de artículos.
-- **`ItemListContainer`:** Contenedor principal que recibe una prop `greeting` y muestra un mensaje de bienvenida personalizado y centrado en la vista.
+3. **Instala las dependencias necesarias:**
 
-## ⚡ Flujo Asíncrono y Renderizado Dinámico (Pre-entrega 3)
+   ```bash
+   npm install
+   ```
 
-### 1. Simulación de API (`asyncMock.js`)
+4. **Configura las variables de entorno:**
+   Crea tu archivo `.env` en la raíz con tus credenciales de Firebase.
 
-- Se exporta la función `getProducts` que retorna una `Promise`.
-- Se implementó un retardo simulado de red de `2000ms` usando `setTimeout`.
+5. **Inicia el servidor de desarrollo local:**
 
-### 2. Ciclo de Vida y Estado (`ItemListContainer.jsx`)
+   ```bash
+   npm run dev
+   ```
 
-- El estado `items` se inicializa como un array vacío (`[]`).
-- Se utiliza `useEffect` con array de dependencias vacío (`[]`) para disparar la carga de datos exclusivamente durante la fase de montaje.
-- Implementación de flujo `async/await` con manejo de estados `loading` para mejorar la experiencia de usuario (UX).
-
-### 3. Separación de Responsabilidades
-
-- **`ItemListContainer`:** Componente contenedor enfocado en la obtención de datos y gestión de estado.
-- **`ItemList`:** Componente presentacional encargado de iterar (`.map()`) la colección recibida por props.
-- **`Item`:** Componente atómico que dibuja la card individual de cada polo, asociando `key={product.id}` de forma única y estable.
-
-## 🔍 Detalle de Producto, Enrutamiento Dinámico y Pruebas Unitarias (Pre-entrega 4)
-
-### 1. Búsqueda Asíncrona Dinámica (`getProductById`)
-
-- Función exportada en `src/mock/asyncMock.js` que recibe un identificador (`productId`).
-- Retorna una `Promise` que resuelve con el objeto coincidente tras un retardo simulado de red de `1500ms`, o rechaza con un `Error` descriptivo si el ID no existe en el catálogo.
-
-### 2. Navegación Dinámica (`react-router-dom`)
-
-- **Ruta dinámica `/item/:itemId`:** Conectada en `App.jsx` mediante `BrowserRouter` y `Routes`.
-- **Hook `useParams`:** Implementado en `ItemDetailContainer` para capturar el segmento dinámico de la URL de forma reactiva dentro de las dependencias de `useEffect`.
-- **Navegación declarativa:** Tarjetas `Item` enlazadas mediante `<Link to={`/item/${id}`}>`.
-
-### 3. Componentes y Separación de Responsabilidades
-
-- **`ItemDetailContainer`:** Componente contenedor enfocado en la lógica asíncrona, control de estados (`product`, `loading`, `error`) y captura de parámetros de ruta.
-- **`ItemDetail`:** Componente puramente presentacional que distribuye la ficha técnica (material, calce, tallas, precio, stock e imágenes).
-- **`ItemCount`:** Componente modular reutilizable que gestiona la selección de unidades respetando los límites reales del producto (`0 <= count <= stock`).
-
-### 4. Cobertura de Pruebas Unitarias (Vitest & Testing Library)
-
-- **`asyncMock.test.js`:** Valida la resolución correcta de la promesa con datos reales y su rechazo ante identificadores no encontrados.
-- **`ItemCount.test.jsx`:** Valida que el contador respete los topes de cantidad (límite inferior `0` y límite superior `stock`) y la llamada a la función de adición.
-- **Ejecución local de pruebas:** `npm run test`
-
-## 🧭 Arquitectura de Navegación Completa (Pre-entrega 5)
-
-### 1. Sistema de Enrutamiento (`react-router-dom`)
-
-La aplicación cuenta con un enrutador centralizado montado con `BrowserRouter` en `App.jsx`, manteniendo un layout compartido (`Navbar` y `Footer`) persistente en todo momento:
-
-- **`/` (Inicio):** Carga el catálogo completo de polos mediante `ItemListContainer`.
-- **`/category/:categoryId`:** Filtra dinámicamente los productos según el parámetro capturado con `useParams`.
-- **`/item/:itemId`:** Monta la ficha técnica extendida y selector de stock del producto seleccionado.
-- **`*` (Error 404):** Captura URLs inexistentes y ofrece navegación controlada hacia la raíz con el componente `NotFound`.
-
-### 2. Navegación SPA Declarativa
-
-- **`NavLink`:** Aplicado en el menú superior para resaltar automáticamente la categoría seleccionada mediante la clase `.active`.
-- **`Link`:** Empleado en tarjetas de producto (`Item`), el logotipo de la marca y la vista de error para transicionar entre vistas sin recargas de página.
-- **Sincronización Reactiva:** `ItemListContainer` escucha los cambios en `categoryId` mediante el array de dependencias de `useEffect([categoryId])`, resolviendo la promesa correspondiente de forma automática.
-
-## 🛒 Estado Global del Carrito con Context API (Pre-entrega 6)
-
-### 1. Arquitectura de Estado Global (`CartContext.jsx`)
-
-- **`CartProvider`:** Envuelve el árbol de componentes dentro del enrutador en `App.jsx`, centralizando el estado del carrito sin incurrir en _prop drilling_.
-- **Custom Hook `useCart`:** Proporciona un acceso seguro y modular al contexto validando su envoltura previa.
-
-### 2. Métodos e Inmutabilidad Estricta
-
-- **`addItem(item, quantity)`:** Comprueba si el producto ya existe con `.find()`. Si existe, actualiza la cantidad acumulada mediante `.map()` respetando el límite de `stock`; si es nuevo, lo incorpora mediante spread syntax `[...prevCart, { ...item, quantity }]`.
-- **`removeItem(itemId)`:** Elimina productos individualmente de forma inmutable usando `.filter()`.
-- **`clear()`:** Vacía el carrito restableciendo el estado a `[]`.
-- **`isInCart(id)`:** Valida existencias devolviendo un booleano mediante `.some()`.
-- **Cálculos en tiempo de render:** `totalItems` (unidades totales) y `totalPrice` (monto total) calculados reactivamente con `.reduce()`.
-
-### 3. Vistas y Renderizado Condicional
-
-- **`CartWidget.jsx`:** Burbuja reactiva en el `Navbar` conectada al contexto que muestra el conteo total y se oculta automáticamente si no hay artículos (`totalItems === 0`).
-- **`ItemDetail.jsx`:** Al agregar unidades, oculta el contador `ItemCount` y activa accesos directos ("Terminar mi compra" hacia `/cart` y "Seguir comprando").
-- **`Cart.jsx`:** Vista dedicada en `/cart` con renderizado condicional doble (aviso y botón de regreso si está vacío vs. desglose detallado con imagen, talla, subtotales, botón de eliminación superior derecha, total general y vaciado de orden).
-
-## 🔥 Integración con Firebase & Cloud Firestore (Pre-entrega 7)
-
-### 1. Backend as a Service (BaaS)
-
-- **Cloud Firestore:** Catálogo de productos consultado de forma asíncrona mediante las funciones modulares del SDK de Firebase (`collection`, `getDocs`, `query`, `where`, `doc`, `getDoc`).
-- **Firebase Authentication:** Gestión de cuentas mediante correo electrónico y contraseña (`createUserWithEmailAndPassword`, `signInWithEmailAndPassword`, `signOut`), administrado globalmente por `AuthContext` con persistencia mediante `onAuthStateChanged`.
-
-### 2. Colecciones y Modelo de Datos
-
-- **`products`:** Documentos con datos tipados (`name`, `price` [int64], `stock` [int64], `categorySlug`, `sizes` [array], `img`, `description`, `material`, `fit`, `sku`).
-- **`orders`:** Persistencia transaccional de pedidos confirmados:
-  - `buyer`: Datos del cliente autenticado (`email`, `name`, `phone`, `address`, `city`).
-  - `items`: Detalle de prendas adquiridas (`id`, `name`, `price`, `quantity`, `size`, `subtotal`).
-  - `total`: Importe liquidado en soles.
-  - `date`: Marca temporal de servidor (`serverTimestamp()`).
-  - `status`: Estado de procesamiento (`generada`).
-
-### 3. Sincronización y Reglas de Negocio
-
-- Al generar la compra con `addDoc`, se actualiza el stock remanente en `products` mediante `updateDoc` y se vacía el carrito reactivamente.
-- Claves únicas compuestas (`${item.id}-${item.selectedSize}`) en la vista del carrito para asegurar reconciliación libre de colisiones al manejar variantes de talla.
+6. **Abre la aplicación en el navegador:**
+   Ingresa a la dirección local indicada por la terminal (usualmente `http://localhost:5173`).

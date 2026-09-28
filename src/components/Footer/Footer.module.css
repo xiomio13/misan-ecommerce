@@ -1,0 +1,82 @@
+.footerContainer {
+  background-color: #1d3557;
+  color: #f1faee;
+  margin-top: auto;
+  padding: 3rem 1.5rem 1.5rem;
+  border-top: 3px solid #e63946;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .footerContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.brand h3 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.brand span {
+  color: #e63946;
+}
+
+.brand p {
+  color: #a8dadc;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+.linksTitle,
+.infoTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.linksList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.linksList a {
+  color: #a8dadc;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.linksList a:hover {
+  color: #ffffff;
+}
+
+.infoBlock p {
+  font-size: 0.9rem;
+  color: #a8dadc;
+  margin-bottom: 0.4rem;
+}
+
+.bottomBar {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #a8dadc;
+}

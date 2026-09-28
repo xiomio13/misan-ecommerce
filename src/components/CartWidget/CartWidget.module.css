@@ -1,0 +1,35 @@
+.cartWidget {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  min-width: 52px;
+  padding: 0 1rem;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.cartWidget:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+  border-color: #f1faee;
+}
+
+.cartIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.cartBadge {
+  background-color: #e63946;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  border-radius: 12px;
+  padding: 0.15rem 0.5rem;
+  margin-left: 0.45rem;
+  line-height: 1.2;
+}
