@@ -1,39 +1,48 @@
 # 👕 Misan - Tienda Online de Polos para Caballero
 
-**Misan** es una Single Page Application (SPA) de comercio electrónico moderna y escalable, especializada en la venta exclusiva de polos de alta gama para caballero (cortes Clásicos, Slim Fit, Oversize y Piqué).
+**Misan** es una Single Page Application (SPA) de comercio electrónico moderna, modular y escalable, especializada en la venta exclusiva de polos de alta gama para caballero (cortes Clásicos, Slim Fit, Oversize y Piqué).
 
-Desarrollada con **React**, **Vite** y conectada a la nube mediante **Firebase** (Cloud Firestore y Firebase Authentication), implementando arquitectura modular basada en componentes, enrutamiento dinámico, contexto global para el carrito y persistencia transaccional de compras en tiempo real.
+La aplicación fue desarrollada con **React** y **Vite**, e integrada con **Firebase** (Cloud Firestore y Firebase Authentication) para la gestión persistente del catálogo, usuarios y órdenes de compra. Se encuentra desplegada en producción a través de **Vercel** con reescritura de rutas para navegación fluida.
+
+---
+
+## 🌐 Demo en Producción
+
+Puedes probar la tienda en línea y su flujo completo de compra en:  
+👉 **[https://misan-ecommerce.vercel.app/](https://misan-ecommerce.vercel.app/)**
 
 ---
 
 ## 🚀 Tecnologías Utilizadas
 
-- **React 18 / 19** (Componentes Funcionales, Custom Hooks, Context API)
-- **Vite** (Build Tool y entorno de desarrollo ultra-rápido)
-- **React Router DOM 6** (Enrutamiento dinámico, parámetros de URL y rutas protegidas)
-- **Firebase SDK Modular (v10 / v11)**:
-  - **Cloud Firestore**: Base de datos NoSQL documental en la nube para catálogo y órdenes de compra.
+- **React 18 / 19** (Componentes Funcionales, Hooks personalizados, Context API)
+- **Vite** (Build Tool y entorno de desarrollo de alto rendimiento)
+- **React Router DOM 6** (Enrutamiento dinámico SPA, rutas parametrizadas y protegidas)
+- **Firebase SDK Modular (v9+)**:
+  - **Cloud Firestore**: Base de datos documental NoSQL para catálogo y órdenes transaccionales.
   - **Firebase Authentication**: Gestión de usuarios, registro e inicio de sesión reactivo con persistencia de sesión (`onAuthStateChanged`).
-- **JavaScript Moderno (ES6+)** (Funciones asíncronas con `async/await` y manejo de errores con `try/catch`)
-- **CSS Modules / CSS3** (Estilos modulares y desacoplados por componente)
-- **Git y GitHub** (Control de versiones mediante ramas de características y convenciones de commits)
+- **JavaScript Moderno (ES6+)** (Programación asíncrona con `async/await` y manejo de excepciones)
+- **CSS Modules** (Estilos modulares, encapsulados y diseño responsive para móviles y escritorio)
+- **Vercel** (Hosting en la nube y configuración de rewrites para rutas SPA)
+- **Git y GitHub** (Control de versiones con ramas feature y convención de Conventional Commits)
 
 ---
 
 ## ✨ Funcionalidades y Arquitectura
 
-- **Catálogo 100% en la Nube:** Productos consultados directamente desde Cloud Firestore mediante consultas condicionales (`query`, `where`).
-- **Navegación Dinámica:** Rutas dedicadas para el catálogo completo (`/`), filtrado por categoría (`/category/:categoryId`) y ficha de detalle individual (`/item/:itemId`).
-- **Ficha Técnica y Stock:** Vista de detalle con especificaciones (composición, calce, tallas) y selector de cantidades (`ItemCount`) condicionado por el stock real.
-- **Carrito Global (`CartContext`):** Manejo de compras global e inmutable sin prop-drilling, cálculo reactivo de subtotales y clave compuesta (`id-talla`) para selección de variantes.
-- **Sesión de Usuario Persistente:** Registro, inicio y cierre de sesión seguro mediante Firebase Authentication.
-- **Checkout Protegido y Transaccional:** Acceso exclusivo a usuarios logueados, validación defensiva en JavaScript de los datos de contacto, persistencia de la orden con `serverTimestamp()` y actualización de stock remanente en tiempo real.
+- **Catálogo en Tiempo Real:** Productos consumidos directamente desde Cloud Firestore mediante consultas dinámicas y filtrado por categoría (`query`, `where`).
+- **Navegación SPA:** Rutas para todo el catálogo (`/`), categorías (`/category/:categoryId`) y detalle de prenda (`/item/:itemId`).
+- **Ficha Técnica y Stock:** Vista de detalle con especificaciones (composición, calce, SKU) y selector interactivo (`ItemCount`) limitado por existencias reales.
+- **Carrito Global (`CartContext`):** Estado global inmutable, cálculo automático de totales y control de variantes mediante clave compuesta (`id-talla`).
+- **Autenticación de Clientes:** Inicio de sesión y registro de cuentas con Firebase Auth y control de errores en interfaz.
+- **Checkout y Órdenes:** Proceso de compra exclusivo para usuarios autenticados con persistencia en Firestore (`orders`), registro de fecha con `serverTimestamp()` y generación de ID único de confirmación.
+- **Diseño Responsive:** Interfaz adaptable a pantallas móviles (360px+) y escritorio, sin desbordamientos horizontales.
 
 ---
 
 ## 🔐 Variables de Entorno
 
-El proyecto lee todas las credenciales de Firebase a través de variables de entorno para proteger la configuración.
+El proyecto consume sus credenciales de Firebase desde variables de entorno para evitar exponer datos sensibles.
 
 Crea un archivo `.env` en la raíz del proyecto tomando como guía el archivo `.env.example`:
 
@@ -46,7 +55,7 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=tu_messaging_sender_id
 VITE_FIREBASE_APP_ID=tu_app_id
 ```
 
-> **Nota de seguridad:** El archivo `.env` se encuentra estrictamente ignorado por `.gitignore` para no exponer credenciales privadas en el repositorio público.
+> **Seguridad:** El archivo `.env` se encuentra ignorado por `.gitignore` y nunca se sube al repositorio público.
 
 ---
 
@@ -54,7 +63,7 @@ VITE_FIREBASE_APP_ID=tu_app_id
 
 ### 1. Colección `products`
 
-Almacena el inventario de polos masculinos disponibles en la tienda:
+Almacena las prendas del catálogo:
 
 ```json
 {
@@ -63,7 +72,7 @@ Almacena el inventario de polos masculinos disponibles en la tienda:
   "categorySlug": "clasicos",
   "price": 69,
   "stock": 12,
-  "img": "https://images.unsplash.com/photo-1581655353564-df123a1eb820",
+  "img": "/products/polo-01.jpeg",
   "description": "100% algodón pima peruano con cuello camisero y tejido transpirable.",
   "material": "Algodón Pima 100%",
   "fit": "Classic Regular Fit",
@@ -74,7 +83,7 @@ Almacena el inventario de polos masculinos disponibles en la tienda:
 
 ### 2. Colección `orders`
 
-Registra las compras completadas de forma atómica en el proceso de Checkout:
+Registra cada compra generada tras el checkout:
 
 ```json
 {
@@ -106,36 +115,36 @@ Registra las compras completadas de forma atómica en el proceso de Checkout:
 
 ---
 
-## 💻 Instrucciones de Instalación y Ejecución Local
+## 💻 Instalación y Ejecución Local
 
-Para clonar, configurar y ejecutar este proyecto en tu entorno local, sigue estos pasos desde la terminal:
+Para clonar y poner en marcha el proyecto localmente, sigue estos pasos:
 
-1. **Clona el repositorio:**
+1. **Clonar el repositorio:**
 
    ```bash
-   git clone https://github.com/xiomio13/misan-ecommerce.git
+   git clone [https://github.com/xiomio13/misan-ecommerce.git](https://github.com/xiomio13/misan-ecommerce.git)
    ```
 
-2. **Ingresa a la carpeta del proyecto:**
+2. **Entrar a la carpeta del proyecto:**
 
    ```bash
    cd misan-ecommerce
    ```
 
-3. **Instala las dependencias necesarias:**
+3. **Instalar dependencias:**
 
    ```bash
    npm install
    ```
 
-4. **Configura las variables de entorno:**
-   Crea tu archivo `.env` en la raíz con tus credenciales de Firebase.
+4. **Configurar credenciales:**  
+   Copia el archivo `.env.example` como `.env` en la raíz y completa los valores con tus claves de Firebase.
 
-5. **Inicia el servidor de desarrollo local:**
+5. **Iniciar el servidor de desarrollo:**
 
    ```bash
    npm run dev
    ```
 
-6. **Abre la aplicación en el navegador:**
-   Ingresa a la dirección local indicada por la terminal (usualmente `http://localhost:5173`).
+6. **Abrir en el navegador:**  
+   Ingresa a la URL local indicada en la terminal (usualmente `http://localhost:5173`).
