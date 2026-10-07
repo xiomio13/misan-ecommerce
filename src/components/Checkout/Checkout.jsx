@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
-import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase/config';
-import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
-import styles from './Checkout.module.css';
+import React, { useState } from "react";
+import { Navigate, Link } from "react-router-dom";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import styles from "./Checkout.module.css";
 
 function Checkout() {
   const { cart, totalPrice, clear } = useCart();
   const { currentUser } = useAuth();
 
   const [buyer, setBuyer] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    city: 'Lima'
+    name: "",
+    phone: "",
+    address: "",
+    city: "Lima",
   });
 
   const [orderId, setOrderId] = useState(null);
@@ -22,7 +28,7 @@ function Checkout() {
   const [error, setError] = useState(null);
 
   if (!currentUser) {
-    return <Navigate to="/auth" state={{ from: '/checkout' }} replace />;
+    return <Navigate to="/auth" state={{ from: "/checkout" }} replace />;
   }
 
   if (cart.length === 0 && !orderId) {
@@ -31,22 +37,31 @@ function Checkout() {
 
   if (orderId) {
     return (
-      <div className={styles.successCard}>
-        <h1 className={styles.successTitle}>¡Gracias por tu compra en Misan!</h1>
-        <p className={styles.successMsg}>Tu pedido fue procesado exitosamente.</p>
+      <div className={styles.successContainer}>
+        <div className={styles.successCard}>
+          <h1 className={styles.successTitle}>
+            ¡Gracias por tu compra en Misan!
+          </h1>
+          <p className={styles.successMsg}>
+            Tu pedido fue procesado exitosamente.
+          </p>
 
-        <div className={styles.orderBox}>
-          <p className={styles.orderLabel}>Código de seguimiento de tu orden:</p>
-          <strong className={styles.orderCode}>{orderId}</strong>
+          <div className={styles.orderBox}>
+            <p className={styles.orderLabel}>
+              Código de seguimiento de tu orden:
+            </p>
+            <strong className={styles.orderCode}>{orderId}</strong>
+          </div>
+
+          <p className={styles.emailConfirm}>
+            Enviamos el detalle de confirmación a tu correo:{" "}
+            <strong>{currentUser?.email}</strong>.
+          </p>
+
+          <Link to="/" className={styles.btnHome}>
+            Volver a la tienda
+          </Link>
         </div>
-
-        <p className={styles.emailConfirm}>
-          Enviamos el detalle de confirmación a tu correo: <strong>{currentUser.email}</strong>.
-        </p>
-
-        <Link to="/" className={styles.btnHome}>
-          Volver a la tienda
-        </Link>
       </div>
     );
   }
@@ -54,7 +69,7 @@ function Checkout() {
   const handleInputChange = (e) => {
     setBuyer({
       ...buyer,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -62,17 +77,17 @@ function Checkout() {
     const { name, phone, address, city } = buyer;
 
     if (!name.trim() || !phone.trim() || !address.trim() || !city.trim()) {
-      return 'Todos los campos son obligatorios y no pueden contener solo espacios.';
+      return "Todos los campos son obligatorios y no pueden contener solo espacios.";
     }
 
     if (name.trim().length < 3) {
-      return 'El nombre completo debe tener al menos 3 caracteres.';
+      return "El nombre completo debe tener al menos 3 caracteres.";
     }
 
-    const cleanPhone = phone.replace(/[\s-]/g, '');
+    const cleanPhone = phone.replace(/[\s-]/g, "");
     const phoneRegex = /^[0-9]{7,15}$/;
     if (!phoneRegex.test(cleanPhone)) {
-      return 'El teléfono debe contener entre 7 y 15 dígitos numéricos válidos.';
+      return "El teléfono debe contener entre 7 y 15 dígitos numéricos válidos.";
     }
 
     return null;
@@ -96,27 +111,27 @@ function Checkout() {
         name: buyer.name.trim(),
         phone: buyer.phone.trim(),
         address: buyer.address.trim(),
-        city: buyer.city.trim()
+        city: buyer.city.trim(),
       },
       items: cart.map((item) => ({
         id: item.id,
         name: item.name,
         price: item.price,
         quantity: item.quantity,
-        size: item.selectedSize || 'Estándar',
-        subtotal: item.price * item.quantity
+        size: item.selectedSize || "Estándar",
+        subtotal: item.price * item.quantity,
       })),
       total: totalPrice,
       date: serverTimestamp(),
-      status: 'generada'
+      status: "generada",
     };
 
     try {
-      const ordersRef = collection(db, 'orders');
+      const ordersRef = collection(db, "orders");
       const docRef = await addDoc(ordersRef, orderData);
 
       for (const item of cart) {
-        const productRef = doc(db, 'products', item.id);
+        const productRef = doc(db, "products", item.id);
         const newStock = Math.max(0, (item.stock || 0) - item.quantity);
         await updateDoc(productRef, { stock: newStock });
       }
@@ -124,8 +139,10 @@ function Checkout() {
       setOrderId(docRef.id);
       clear();
     } catch (err) {
-      console.error('Error al generar la orden:', err);
-      setError('Hubo un error al procesar tu orden. Por favor intenta de nuevo.');
+      console.error("Error al generar la orden:", err);
+      setError(
+        "Hubo un error al procesar tu orden. Por favor intenta de nuevo.",
+      );
     } finally {
       setLoading(false);
     }
@@ -196,7 +213,7 @@ function Checkout() {
           </div>
 
           <button type="submit" disabled={loading} className={styles.btnSubmit}>
-            {loading ? 'Generando orden...' : 'Confirmar Orden de Compra'}
+            {loading ? "Generando orden..." : "Confirmar Orden de Compra"}
           </button>
         </div>
       </form>

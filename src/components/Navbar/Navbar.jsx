@@ -1,84 +1,90 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import CartWidget from '../CartWidget/CartWidget';
-import styles from './Navbar.module.css';
+import React from "react";
+import { NavLink, Link } from "react-router-dom";
+import CartWidget from "../CartWidget/CartWidget";
+import { useAuth } from "../../context/AuthContext";
+import styles from "./Navbar.module.css";
 
 function Navbar() {
-  const { currentUser, logoutUser } = useAuth();
+  const { currentUser, logoutUser, logout } = useAuth();
+  const handleLogout = logoutUser || logout;
 
   return (
-    <header className={styles.navbarContainer}>
-      <div className={styles.logoBox}>
-        <Link to="/" className={styles.logoLink}>
-          <h2 className={styles.logoTitle}>
-            Misan<span className={styles.logoDot}>.</span>
-          </h2>
-        </Link>
-      </div>
-
-      <nav className={styles.navMenu}>
-        <ul className={styles.navLinks}>
-          <li>
-            <NavLink
-              to="/category/clasicos"
-              className={({ isActive }) =>
-                isActive ? `${styles.navItem} ${styles.navItemActive}` : styles.navItem
-              }
-            >
-              Polos Clásicos
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/category/slim-fit"
-              className={({ isActive }) =>
-                isActive ? `${styles.navItem} ${styles.navItemActive}` : styles.navItem
-              }
-            >
-              Polos Slim Fit
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/category/oversize"
-              className={({ isActive }) =>
-                isActive ? `${styles.navItem} ${styles.navItemActive}` : styles.navItem
-              }
-            >
-              Polos Oversize
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/category/pique"
-              className={({ isActive }) =>
-                isActive ? `${styles.navItem} ${styles.navItemActive}` : styles.navItem
-              }
-            >
-              Polos Piqué
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-
-      <div className={styles.userSection}>
-        {currentUser ? (
-          <div className={styles.userInfo}>
-            <span>{currentUser.email}</span>
-            <button onClick={logoutUser} type="button" className={styles.btnLogout}>
-              Salir
-            </button>
-          </div>
-        ) : (
-          <Link to="/auth" className={styles.btnLogin}>
-            Ingresar
+    <header className={styles.header}>
+      <div className={styles.navbarContainer}>
+        {/* Logotipo alineado a la izquierda */}
+        <div className={styles.brandBox}>
+          <Link to="/" className={styles.brandLink}>
+            Misan<span className={styles.brandDot}>.</span>
           </Link>
-        )}
+        </div>
 
-        <Link to="/cart" className={styles.cartWrapper}>
-          <CartWidget />
-        </Link>
+        {/* Menú de categorías matemáticamente centrado */}
+        <nav className={styles.navMenu}>
+          <NavLink
+            to="/category/clasicos"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeLink}`
+                : styles.navLink
+            }
+          >
+            Polos Clásicos
+          </NavLink>
+          <NavLink
+            to="/category/slim-fit"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeLink}`
+                : styles.navLink
+            }
+          >
+            Polos Slim Fit
+          </NavLink>
+          <NavLink
+            to="/category/oversize"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeLink}`
+                : styles.navLink
+            }
+          >
+            Polos Oversize
+          </NavLink>
+          <NavLink
+            to="/category/pique"
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.navLink} ${styles.activeLink}`
+                : styles.navLink
+            }
+          >
+            Polos Piqué
+          </NavLink>
+        </nav>
+
+        {/* Acciones de la derecha: Login/Logout + Carrito */}
+        <div className={styles.actionsBox}>
+          {currentUser ? (
+            <div className={styles.userProfile}>
+              <span className={styles.userEmail}>{currentUser.email}</span>
+              <button
+                onClick={handleLogout}
+                type="button"
+                className={styles.btnLogout}
+              >
+                Salir
+              </button>
+            </div>
+          ) : (
+            <Link to="/auth" className={styles.btnLogin}>
+              Ingresar
+            </Link>
+          )}
+
+          <Link to="/cart" className={styles.cartWrapper}>
+            <CartWidget />
+          </Link>
+        </div>
       </div>
     </header>
   );

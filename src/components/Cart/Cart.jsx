@@ -1,19 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
-import styles from './Cart.module.css';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import styles from "./Cart.module.css";
 
 function Cart() {
-  const { cart, removeItem, clear, totalPrice } = useCart();
+  const { cart, totalPrice, removeItem, clear } = useCart();
+  const navigate = useNavigate();
 
   if (cart.length === 0) {
     return (
-      <div className={styles.cartContainer}>
-        <div className={styles.emptyCard}>
-          <h2 className={styles.title}>Tu carrito está vacío</h2>
-          <p>No tienes productos seleccionados en este momento.</p>
-          <Link to="/" className={styles.btnReturn}>
-            Explorar catálogo de polos
+      <div className={styles.emptyCartContainer}>
+        <div className={styles.emptyCartCard}>
+          <div className={styles.emptyCartIcon}>🛒</div>
+          <h2>Tu carrito está vacío</h2>
+          <p>Explora nuestras colecciones y añade tus polos favoritos.</p>
+          <Link to="/" className={styles.btnPrimary}>
+            Ir al catálogo
           </Link>
         </div>
       </div>
@@ -21,55 +23,77 @@ function Cart() {
   }
 
   return (
-    <section className={styles.cartContainer}>
-      <h1 className={styles.title}>Carrito de Compras</h1>
+    <div className={styles.cartContainer}>
+      <h1 className={styles.cartTitle}>Carrito de Compras</h1>
 
-      <div className={styles.itemsList}>
+      <div className={styles.cartList}>
         {cart.map((item) => {
-          const itemKey = `${item.id}-${item.selectedSize || 'std'}`;
+          const itemKey = `${item.id}-${item.selectedSize || "std"}`;
           return (
-            <article key={itemKey} className={styles.cartItem}>
-              <img src={item.img} alt={item.name} className={styles.itemImage} />
-              
-              <div className={styles.itemInfo}>
+            <div key={itemKey} className={styles.cartCard}>
+              <div className={styles.imageWrapper}>
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className={styles.itemImage}
+                />
+              </div>
+
+              <div className={styles.itemDetails}>
                 <h3 className={styles.itemName}>{item.name}</h3>
                 <div className={styles.itemMeta}>
-                  Talla: <strong>{item.selectedSize || 'Estándar'}</strong> | Cantidad: {item.quantity} | Unitario: S/ {item.price}.00
+                  <span>
+                    Talla: <strong>{item.selectedSize || "M"}</strong>
+                  </span>
+                  <span>
+                    Cantidad: <strong>{item.quantity}</strong>
+                  </span>
+                  <span>
+                    Unitario: <strong>S/ {item.price}.00</strong>
+                  </span>
                 </div>
               </div>
 
-              <div className={styles.itemSubtotal}>
-                S/ {item.price * item.quantity}.00
+              <div className={styles.itemRightBox}>
+                <span className={styles.itemSubtotal}>
+                  S/ {item.price * item.quantity}.00
+                </span>
               </div>
 
               <button
                 type="button"
-                className={styles.btnRemove}
-                onClick={() => removeItem(item.id)}
+                onClick={() => removeItem(item.id, item.selectedSize)}
+                className={styles.btnDelete}
                 title="Eliminar producto"
+                aria-label="Eliminar producto"
               >
                 ✕
               </button>
-            </article>
+            </div>
           );
         })}
       </div>
 
-      <footer className={styles.footerActions}>
-        <div className={styles.totalText}>
-          Total a pagar: <span>S/ {totalPrice}.00</span>
+      <div className={styles.cartFooter}>
+        <div className={styles.totalRow}>
+          <span>Total a pagar:</span>
+          <strong className={styles.totalAmount}>S/ {totalPrice}.00</strong>
         </div>
 
-        <div className={styles.buttonsGroup}>
-          <button type="button" className={styles.btnClear} onClick={clear}>
+        <div className={styles.actionsGroup}>
+          <button type="button" onClick={clear} className={styles.btnClear}>
             Vaciar Carrito
           </button>
-          <Link to="/checkout" className={styles.btnCheckout}>
+          <button
+            type="button"
+            onClick={() => navigate("/checkout")}
+            className={styles.btnCheckout}
+          >
             Continuar con el pago
-          </Link>
+          </button>
         </div>
-      </footer>
-    </section>
+      </div>
+    </div>
   );
 }
 
